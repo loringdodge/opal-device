@@ -4,8 +4,11 @@ var app = express();
 
 sentiment.getSentiment("i like turtles!"); 
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+  
+	//all nondefined paths will go to index.html
+  app.route('/*')
+    .get(function(req, res) {
+      res.sendFile("/Users/Dphung/HackReactor/opalDevice/client/index.html");
+    });
 
 app.listen(3000); 

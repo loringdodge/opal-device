@@ -17,28 +17,30 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > Omnipotence
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > To derive meaning out of Tweet aggregates. 
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Omnipotence provides the user with valuable information about tweet data relative to real life events. 
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > How do you determine popular opinion on a product campaign in a geographical location? 
+
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
+  Omnipotence analayzes tweets and visualizes them in a meaningful way. 
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > "I didn't know if people liked me before, but now I know."
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Just put stuff into the input bars!
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "Now I understand why Ferguson matters!"
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Start by checking a twitter username in the input header!

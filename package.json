@@ -4,8 +4,8 @@
   "description": "Twitter Behavior",
   "main": "index.js",
   "dependencies": {
-    "mongodb": "^1.4.22",
     "express": "^4.10.4",
+    "mongodb": "^1.4.22",
     "mongoose": "^3.8.20",
     "nodemon": "^1.2.1",
     "request": "^2.49.0",

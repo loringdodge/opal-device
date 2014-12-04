@@ -17,13 +17,13 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Omnipotence
+  > Omnigrahm
 
 ## Sub-Heading ##
-  > To derive meaning out of Tweet aggregates. 
+  > To derive meaning out of instagram aggregates. 
 
 ## Summary ##
-  > Omnipotence provides the user with valuable information about tweet data relative to real life events. 
+  > Omnigrahm provides the user with valuable information about tweet data relative to real life events. 
 
 ## Problem ##
   > How do you determine popular opinion on a product campaign in a geographical location? 
@@ -31,7 +31,7 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
-  Omnipotence analayzes tweets and visualizes them in a meaningful way. 
+  Omnigrahm analayzes tweets and visualizes them in a meaningful way. 
 
 ## Quote from You ##
   > "I didn't know if people liked me before, but now I know."

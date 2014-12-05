@@ -1,18 +1,23 @@
 var mongoose = require("mongoose");
 
 var InstagramSchema = new mongoose.Schema({
-  "tags":{ any: {} },
-  "type":String,
-  "location": { any: {} },
-  "filter":String,
-  "created_time": String,
-  "link": String ,
-  "likes":{ any: {} },
-  "images":{ any: {} },
-  "users_in_photo":{ any: {} },
-  "caption":{ any: {} },
-  "user_has_liked": Boolean,
-  "sentiment": {any: {}}
+         "attribution": String,
+         "tags":{ type : Array , "default" : [] },
+         "type":String,
+         "location":Object,
+         "comments":Object,
+         "filter":String,
+         "created_time":String, //unix time stamp. have fun! stack overflow_id: 12612110. 
+         "link":String,
+         "likes":Object,
+         "images":Object,
+         "users_in_photo": { type: Array, "default": []}, 
+         "caption":Object,
+         "user_has_liked":Boolean,
+         "id":String,
+         "user":Object, 
+         "sentiment": Object
+        
 });
 
 module.exports = mongoose.model("Instagram", InstagramSchema);

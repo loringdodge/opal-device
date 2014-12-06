@@ -7,12 +7,12 @@ angular.module('omnigrahm',[
 	$stateProvider
 	.state('user', {
 		templateUrl: 'user/user.html',
-		controller: 'UserController',
+		controller: 'userController',
 		url: '/'
 	})
 	.state('location', {
 		templateUrl: 'location/location.html',
-		controller: 'LocationController',
+		controller: 'locationController',
 		url: '/location'
 	});
 })

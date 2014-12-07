@@ -10,10 +10,7 @@ Instagram.find({}).remove(function() {
   Instagram.create({
          "tags":[ "metadata", "lame"],
          "type":"image",
-         "location":{
-            "latitude":37.801738722,
-            "longitude":-122.406219472
-         },
+         "location": { "type": "Point", "coordinates": [ -122.406219472, 37.801738722 ] }, 
          "comments":{  
             "count":3,
             "data":[  
@@ -120,10 +117,7 @@ Instagram.find({}).remove(function() {
 
          ],
          "type":"image",
-         "location":{  
-            "latitude":37.404273972,
-            "longitude":-122.052116389
-         },
+         "location": {"type": "Point", "coordinates": [-122.052116389, 37.404273972]},
          "comments":{  
             "count":0,
             "data":[  

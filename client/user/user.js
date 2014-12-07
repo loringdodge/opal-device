@@ -47,7 +47,7 @@ angular.module('omnigrahm.user', [])
                     $http.post('/api/instagram', JSON.stringify(obj))
                     .success(function(data, status, headers, config) {
                       console.log('posted!!!');
-                      // console.log(data);
+                      console.log(data);
                       // this callback will be called asynchronously
                       // when the response is available
                     })
@@ -56,26 +56,19 @@ angular.module('omnigrahm.user', [])
                         // or server returns response with an error status.
                     })
                   })                  
-                }); //end of for loop
+                }); //end of forEach loop
             });
 				  	console.log('not found');
 				    // log error
 				  });
           //end of error
-
 			}).fail(function(err) {
 			  //fail of Oauth
 			});
   };
-
-
-var getCaptionString = function(instaObj) {
-  return instaObj.caption.text;
-
-};
-
-
-
+  var getCaptionString = function(instaObj) {
+    return instaObj.caption.text;
+  };
 
 });
 

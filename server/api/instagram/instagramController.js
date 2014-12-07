@@ -13,6 +13,7 @@ module.exports = {
   },
   //Grab all instagrams
   findAll: function(req, res) {
+    console.log('in find all');
     Instagram.find(function(err, instagrams) {
       if (err) {
         return handleError(res, err);
@@ -22,6 +23,9 @@ module.exports = {
   },
   //Add new instagram to DB
   createInstagram: function(req, res) {
+    console.log('here');
+    console.log(req);
+    //parse the body
     Instagram.create(req.body, function (err, instagram) {
       if (err) return handleError(res, err);
       return res.json(201, instagram);

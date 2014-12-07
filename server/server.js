@@ -14,7 +14,7 @@ require('./routes')(app);
 
 app.use(express.static(path.join(__dirname, '/../client')));
 
-sentiment.getSentiment("I HATE YOU");
+// sentiment.getSentiment("I HATE YOU");
 
 //require models
 

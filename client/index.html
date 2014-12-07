@@ -19,9 +19,15 @@
   <div class="indexView" ui-view></div>
 
   <body>
+    <div ng-controller='locController'>
+      <form name="inputLocation" ng-submit="getLocFeed(loc)">
+          <input ng-model="loc" placeholder="enter location">
+          <button>get location stuff</button>
+      </form>
+    </div>
     <div ng-controller='userController'>
       <button ng-click='getUserFeed()'>get stuff</button>
-      <div>{{objects}}</div>
+      <!-- <div>{{objects}}</div> -->
     </div>
 
       <script src="../bower_components/angular/angular.js"></script>

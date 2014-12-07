@@ -30,9 +30,20 @@ module.exports = {
       if (err) return handleError(res, err);
       return res.json(201, instagram);
     });
-  }
-};
+  }, 
+  findInstagramByLocation: function(req, res){
+    console.log(req.params.latlng); 
 
-function handleError(res, err) {
-  return res.send (500, err);
+    Instagram.find({location: 
+      { $near: 
+        { $geometry: 
+          {type: "Point", coordinates: [-122.052116389, 37.404273872]}, $minDistance: 0, $maxDistance: 100}
+        }
+      }, function(err, instagrams){
+        if(err){
+          return err
+        }
+        return res.json(200,instagrams); 
+      })
+  }
 }

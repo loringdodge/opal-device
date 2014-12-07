@@ -4,7 +4,7 @@ var InstagramSchema = new mongoose.Schema({
          "attribution": String,
          "tags":{ type : Array , "default" : [] },
          "type":String,
-         "location":Object,
+         "location":{ 'type': {type: String, enum: "Point", default: "Point"}, coordinates: { type: [Number], default: [0,0]} },
          "comments":Object,
          "filter":String,
          "created_time":String, //unix time stamp. have fun! stack overflow_id: 12612110. 
@@ -19,5 +19,7 @@ var InstagramSchema = new mongoose.Schema({
          "sentiment": Object
         
 });
+
+InstagramSchema.index({location: '2dsphere'}); 
 
 module.exports = mongoose.model("Instagram", InstagramSchema);

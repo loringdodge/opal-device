@@ -4,6 +4,7 @@ var Instagram = require("./instagramModel");
 module.exports = {
   //Grab single instagram
   findInstagram: function(req, res) {
+    console.log('in findInstagram');
     Instagram.findById(req.params.id, function(err, instagram){
       if (err) return handleError(res, err);
       if (!instagram) return res.send(404);

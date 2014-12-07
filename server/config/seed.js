@@ -5,6 +5,17 @@
 "use strict";
 
 var Instagram = require('../api/instagram/instagramModel');
+var User = require('../api/user/userModel'); 
+
+User.find({}).remove(function(){
+   User.create({
+      "username": "floofydoug",
+      "userid": 217257560
+   }, 
+   function(){
+      console.log("made a floofy user"); 
+   })
+}); 
 
 Instagram.find({}).remove(function() {
   Instagram.create({

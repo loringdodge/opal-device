@@ -5,22 +5,22 @@ angular.module('omnigrahm.user', [])
   var updateData = function(data) {
     console.log('CALLED GET DATA');
     var result = getData(data);
-    var dateData = result[0];
-    var positiveData = result[1];
-    var negativeData = result[2];
+    var dateData = ['x'].concat(result[0]);
+    var positiveData = ['positive'].concat(result[1]);
+    var negativeData = ['negative'].concat(result[2]);
     var images = result[3];
-    $scope.chartData.x = $scope.chartData.x.concat(dateData);
-    $scope.chartData.positive = $scope.chartData.positive.concat(positiveData);
-    $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
+    $scope.chartData.x = dateData;
+    $scope.chartData.positive = positiveData;
+    $scope.chartData.negative = negativeData;
     console.log($scope.chartData.x);
     showGraph();
-    showImages(images);
+    // showImages(images);
   };
 //
   $scope.chartData = {
-    x: ['x'],
-    positive: ['positive'],
-    negative: ['negative']
+    x: [],
+    positive: [],
+    negative: []
   };
 
   var showGraph = function() {

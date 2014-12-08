@@ -1,7 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var sentiment = require('./api/router');
-var config = require('./config/environment/development');
+var config = require('./config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
@@ -49,7 +49,8 @@ app.use(express.static(path.join(__dirname, '/../client')));
 
 //require models
 
-app.listen(3000);
+app.listen(config.port);
+console.log(config); 
 
 
 exports = module.exports = app;

@@ -1,6 +1,59 @@
 angular.module('omnigrahm.user', [])
 .controller('userController', function($scope, $http) {
-  //noice
+
+  var getData = function() {
+    console.log('CALLED GET DATA');
+    var dateData = ['14-06-01', '14-07-01', '14-08-01', '14-09-01', '14-10-01', '14-11-01', '14-12-01', '15-01-01'];
+    var positiveData = [23, 42, 34, 12, 8, 24, 22, 28];
+    var negativeData = [-4, -2, -6, -18, -23, -4, -2, -4];
+    $scope.chartData.x = $scope.chartData.x.concat(dateData);
+    console.log($scope.chartData.x);
+    $scope.chartData.positive = $scope.chartData.positive.concat(positiveData);
+    $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
+  }
+
+  $scope.chartData = {
+    x: ['x'],
+    positive: ['positive'],
+    negative: ['negative']
+  }
+
+  $scope.showGraph = function() {
+    console.log('something happens');
+    getData();
+    $scope.chart = c3.generate({
+      bindto: '#userChart',
+      data: {
+        x: 'x',
+        columns: [
+          $scope.chartData.x,
+          $scope.chartData.positive,
+          $scope.chartData.negative
+        ],
+        type: 'bar',
+        groups: [
+          ['positive', 'negative']
+        ]
+      },
+      axis: {
+        x: {
+          label: {
+            text: 'Date'
+          },
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+      },
+      grid: {
+        y: {
+          lines: [{value:0}]
+        }
+      }
+    });
+  };
+
   $scope.getUserFeed = function(userId) {
   		OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');
   		var provider = 'instagram';

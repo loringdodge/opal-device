@@ -1,5 +1,5 @@
 angular.module('omnigrahm.location', [])
-.controller('LocationController', function($scope) {
+.controller('locationController', function($scope) {
   //noice
   var getInstagrams = function() {
 

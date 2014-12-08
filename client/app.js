@@ -4,6 +4,7 @@ angular.module('omnigrahm',[
 	'ui.router'
 ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider){
+	$urlRouterProvider.otherwise('/');
 	$stateProvider
 	.state('user', {
 		templateUrl: 'user/user.html',
@@ -16,6 +17,15 @@ angular.module('omnigrahm',[
 		url: '/location'
 	});
 })
+.controller("PanelController", function() {
+  this.tab = 1;
+  this.selectTab = function(setTab) {
+    this.tab = setTab;
+  };
+  this.isSelected = function(checkTab) {
+    return this.tab === checkTab;
+  }
+});
 
 // var getObjectsByLocation = function(cityName) {
 // 	OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');

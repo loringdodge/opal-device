@@ -4,17 +4,19 @@ angular.module('omnigrahm.user', [])
   $scope.dates, $scope.positiveData, $scope.negativeData;
   var updateData = function(data) {
     console.log('CALLED GET DATA');
-    var result = getPositiveAndNegativeCount(data);
+    var result = getData(data);
     var dateData = result[0];
     var positiveData = result[1];
     var negativeData = result[2];
+    var images = result[3];
     $scope.chartData.x = $scope.chartData.x.concat(dateData);
     $scope.chartData.positive = $scope.chartData.positive.concat(positiveData);
     $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
     console.log($scope.chartData.x);
     showGraph();
+    // showImages(images);
   };
-
+//
   $scope.chartData = {
     x: ['x'],
     positive: ['positive'],
@@ -56,6 +58,12 @@ angular.module('omnigrahm.user', [])
     });
   };
 
+  // var showImages = function(images) {
+  //   for (var i = 0; i < Things.length; i++) {
+  //     Things[i]
+  //   };
+  // };
+
   $scope.getUserFeed = function(userId) {
 		OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');
 		var provider = 'instagram';
@@ -68,7 +76,7 @@ angular.module('omnigrahm.user', [])
         $http.get('/api/instagram') //, {params: { user_id: result.user.id } }
 			  .success(function(data, status, headers, config) {
           //gets stuff back from the user
-          $scope.data = data;
+          // $scope.data = data;
 			  	console.log('gets objects back');
 			  	console.log(data);
           updateData(data);
@@ -125,12 +133,13 @@ angular.module('omnigrahm.user', [])
 		});
   };
 
-  var getPositiveAndNegativeCount = function(data) {
+  var getData = function(data) {
     var posSum = [0];
     var negSum = [0];
     var dates = [];
     var syncIndex = 0;
     var currDate = null;
+    var images = [];
     for (var i = 0; i < data.length; i++) {
       var instagram = data[i];
       var date = new Date(data[i].created_time * 1000);
@@ -138,6 +147,7 @@ angular.module('omnigrahm.user', [])
       var instagramDate = date.getFullYear() + '-' + month;
       var sentiment = instagram.sentiment.type;
       if (sentiment === 'neutral') continue;
+      images.push(getImages(instagram));
       //Initialize current date 
       if (!currDate) {
         currDate = instagramDate;
@@ -153,12 +163,19 @@ angular.module('omnigrahm.user', [])
       if (sentiment === "positive") posSum[syncIndex]++;
       else if (sentiment === "negative") negSum[syncIndex]--;
     };
-    return [dates, posSum, negSum];
+    return [dates, posSum, negSum, images];
   };
 
   var getCaptionString = function(instaObj) {
     return instaObj.caption.text;
   };
+
+  var getImages = function(data) {
+    var result = [];
+    result[0] = data.images.thumbnail.url;
+    result[1] = data.images.standard_resolution.url;
+    return result;
+  }
 
 });
 

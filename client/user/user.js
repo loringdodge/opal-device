@@ -2,15 +2,17 @@ angular.module('omnigrahm.user', [])
 .controller('userController', function($scope, $http) {
 
   $scope.dates, $scope.positiveData, $scope.negativeData;
-  var getData = function() {
+  var updateData = function(data) {
     console.log('CALLED GET DATA');
-
-    var dateData = ['14-06-01', '14-07-01', '14-08-01', '14-09-01', '14-10-01', '14-11-01', '14-12-01', '15-01-01'];
-    var positiveData = [23, 42, 34, 12, 8, 24, 22, 28];
-    var negativeData = [-4, -2, -6, -18, -23, -4, -2, -4];
+    var result = getPositiveAndNegativeCount(data);
+    var dateData = result[0];
+    var positiveData = result[1];
+    var negativeData = result[2];
     $scope.chartData.x = $scope.chartData.x.concat(dateData);
     $scope.chartData.positive = $scope.chartData.positive.concat(positiveData);
     $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
+    console.log($scope.chartData.x);
+    showGraph();
   };
 
   $scope.chartData = {
@@ -19,9 +21,8 @@ angular.module('omnigrahm.user', [])
     negative: ['negative']
   };
 
-  $scope.showGraph = function() {
+  var showGraph = function() {
     console.log('something happens');
-    getData();
     $scope.chart = c3.generate({
       bindto: '#userChart',
       data: {
@@ -58,7 +59,7 @@ angular.module('omnigrahm.user', [])
   $scope.getUserFeed = function(userId) {
 		OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');
 		var provider = 'instagram';
-		userId = 217257560;
+		userId = userId || 217257560;
 
 		OAuth.popup(provider)
 		.done(function(result) {
@@ -70,7 +71,7 @@ angular.module('omnigrahm.user', [])
           $scope.data = data;
 			  	console.log('gets objects back');
 			  	console.log(data);
-          getPositiveAndNegativeCount(data);
+          updateData(data);
 			  })
         //error on /api/instagram query
 			  .error(function(data, status, headers, config) {
@@ -140,19 +141,19 @@ angular.module('omnigrahm.user', [])
       //Initialize current date 
       if (!currDate) {
         currDate = instagramDate;
-        dates.push(currDate);
+        dates.push(currDate + '-01');
       }
       if (instagramDate !== currDate) {
         currDate = instagramDate;
-        dates.push(currDate);
+        dates.push(currDate + '-01');
         syncIndex++;
         posSum[syncIndex] = 0;
         negSum[syncIndex] = 0;
       }
       if (sentiment === "positive") posSum[syncIndex]++;
-      else if (sentiment === "negative") negSum[syncIndex]++;
+      else if (sentiment === "negative") negSum[syncIndex]--;
     };
-    console.log([dates, posSum, negSum]);
+    return [dates, posSum, negSum];
   };
 
   var getCaptionString = function(instaObj) {

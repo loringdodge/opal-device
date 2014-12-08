@@ -11,13 +11,15 @@
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='showGraph()'>
-    <button ng-click='getUserFeed()'>Get Stuff</button>
-    <div>{{objects}}</div>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
+    <form>
+      <input>
+      <button ng-click='getUserFeed()'>Get Stuff</button>
+    </form>
     <div id="userChart"></div>
   </div>
 
-  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init='showGraph()'>
+  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init=''>
     <div id="locationChart"></div>
   </div>
 

@@ -9,9 +9,9 @@ var Instagram = require("./server/api/instagram/instagramModel");
 
 var app = express();
 
-mongoose.connect(config.mongo.uri, config.mongo.options);
+//mongoose.connect(config.mongo.uri, config.mongo.options);
 
-if (config.seedDB) { require('./config/seed'); }
+// if (config.seedDB) { require('./config/seed'); }
 
 app.use(bodyParser.urlencoded({ extended: false }))
 

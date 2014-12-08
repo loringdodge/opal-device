@@ -67,7 +67,7 @@ angular.module('omnigrahm.user', [])
     console.log(username);
 
     var userId = userId || 217257560;
-
+    var arr = [];
     OAuth.popup(provider)
     .done(function(result) {
 
@@ -90,7 +90,7 @@ angular.module('omnigrahm.user', [])
                 //api call 
                 if (caption) {
                   var string = caption.replace('#', ' ');
-                  console.log(string);
+                  // console.log(string);
                 } else {
                   string = '';
                 }
@@ -99,6 +99,14 @@ angular.module('omnigrahm.user', [])
                 })
                 .success(function(data) {
                   obj['sentiment'] = data;
+                  arr.push(obj);
+                    // console.log('theLast', userObjects.data.indexOf(obj));
+
+                  if (userObjects.data.length - 1 === userObjects.data.indexOf(obj)) {
+                    console.log('theLast', userObjects.data.indexOf(obj));
+                    updateData(arr);
+                  }
+                  console.log('succc');
                   //post to /api/instagram individual objects
                   $http.post('/api/instagram', JSON.stringify(obj))
                   .success(function(data, status, headers, config) {
@@ -107,6 +115,7 @@ angular.module('omnigrahm.user', [])
                   })
                 })                  
               });
+
           });
       })
       //can't get userid
@@ -114,6 +123,15 @@ angular.module('omnigrahm.user', [])
         console.log(err);
       })
     } //end of if
+
+    // $http.get('/api/instagram'), {params: { user_id: 5485fa5d77397d19a7ac1d99 } }
+    //     .success(function(data, status, headers, config) {
+    //       //gets stuff back from the user
+    //       // $scope.data = data;
+    //      console.log('gets objects back');
+    //      console.log(data);
+    //       updateData(data);
+    //     })
         
         //post to api/instagram -fix so only queries for user
      //    $http.get('/api/instagram') //, {params: { user_id: result.user.id } }

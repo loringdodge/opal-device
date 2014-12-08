@@ -30,6 +30,9 @@ angular.module('omnigrahm.location', [])
 			    	  })
 			    	  .success(function(data) {
 			    	    obj['sentiment'] = data;
+			    	   
+			    	    var coord = [lng,lat];
+			    	   	obj['location'] =  { "type": "Point", "coordinates": coord };
 			    	    console.log(obj);
 			    	    //var stringifiedObj = JSON.stringify(obj);
 			    	    // console.log(stringifiedObj);

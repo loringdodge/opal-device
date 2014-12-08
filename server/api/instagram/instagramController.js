@@ -1,5 +1,6 @@
 var Instagram = require("./instagramModel");
-// var Q = require('q');
+var bodyParser = require('body-parser')
+var Q = require('q');
 
 module.exports = {
   //Grab single instagram
@@ -18,19 +19,36 @@ module.exports = {
       if (err) {
         return handleError(res, err);
       }
-      return res.json(200, instagrams);
+      return res.status(200).json(instagrams);
+
+      // return res.json(200, instagrams);
     });
   },
   //Add new instagram to DB
-  createInstagram: function(req, res) {
-    console.log('here');
-    console.log(req);
-    //parse the body
-    Instagram.create(req.body, function (err, instagram) {
-      if (err) return handleError(res, err);
-      return res.json(201, instagram);
-    });
-  }, 
+  // createInstagram: function(req, res) {
+  //   var jsonParser = bodyParser.json(); 
+
+  //   if (!req.body) return res.sendStatus(400)
+  // // create user in req.body
+  //   console.log('---------here');
+  //   console.log("request", req.body);
+
+  //   var createObj = Q.nbind(Instagram.create, Instagram);
+  //   var theObj = createObj(req.body);
+  //   console.log(JSON.stringify(theObj));
+  //   if (theObj) {
+  //     console.log('testing');
+  //         res.json(theObj);
+  //   }
+  //   //need to parse the body
+  //   Instagram.create(res.json(createObj(req.body)), function (err, instagram) {
+  //     if (err) return handleError(res, err);
+  //     console.log("SUCCESS");
+  //     //can't set these headers 
+  //     // return res.status(201).json(theObj)
+  //     // return res.json(201, instagram);
+  //   }); 
+  // }, 
   findInstagramByLocation: function(req, res){
     console.log(req.params.latlng); 
 

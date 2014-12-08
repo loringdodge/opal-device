@@ -7,6 +7,7 @@
   <link href="../bower_components/c3/c3.css" rel="stylesheet" type="text/css">
 
 </head>
+
 <body ng-controller="PanelController as panel">
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
@@ -16,11 +17,17 @@
       <input>
       <button ng-click='getUserFeed()'>Get Stuff</button>
     </form>
+
     <div id="userChart"></div>
     <div id="userImages"></div>
   </div>
 
-  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init=''>
+  <div ng-show="panel.isSelected(2)" ng-controller='locationController'>
+      <form name="inputLocation" ng-submit="getLocFeed(loc)">
+          <input ng-model="loc" placeholder="enter location">
+          <button>get location stuff</button>
+      </form>
+   
     <div id="locationChart"></div>
   </div>
 

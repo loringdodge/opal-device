@@ -12,7 +12,7 @@
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()' ng-submit='getUserFeed(enteredName)'>
     <form>
       <input ng-model="user" placeholder="Enter username">
       <button ng-click='getUserFeed(user)'>Get Stuff</button>
@@ -31,7 +31,7 @@
       <table>
         <tr>
           <td ng-repeat="image in instaImages">
-            <img src="image[0]">
+            <img src="">
           </td>
         </tr>
       </table>

@@ -1,10 +1,12 @@
 angular.module('omnigrahm.user', [])
 .controller('userController', function($scope, $http) {
 
-  $scope.dates, $scope.positiveData, $scope.negativeData;
+  $scope.instaImages = [];
+
   var updateData = function(data) {
     console.log('CALLED GET DATA');
     var result = getData(data);
+    console.log(result);
     var dateData = ['x'].concat(result[0]);
     var positiveData = ['positive'].concat(result[1]);
     var negativeData = ['negative'].concat(result[2]);
@@ -14,9 +16,9 @@ angular.module('omnigrahm.user', [])
     $scope.chartData.negative = negativeData;
     console.log($scope.chartData.x);
     showGraph();
-    // showImages(images);
+    showImages(images);
   };
-//
+
   $scope.chartData = {
     x: [],
     positive: [],
@@ -59,8 +61,8 @@ angular.module('omnigrahm.user', [])
   };
 
   var showImages = function(images) {
-    for (var i = 0; i < Things.length; i++) {
-      Things[i]
+    for (var i = 0; i < images.length; i++) {
+      $scope.instaImages.push(images[i]);
     };
   };
 

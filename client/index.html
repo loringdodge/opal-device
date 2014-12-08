@@ -14,21 +14,28 @@
   <!-- <div class="indexView" ui-view></div> -->
   <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
     <form>
-      <input>
-      <button ng-click='getUserFeed()'>Get Stuff</button>
+      <input ng-model="user" placeholder="Enter username">
+      <button ng-click='getUserFeed(user)'>Get Stuff</button>
     </form>
-
     <div id="userChart"></div>
     <div id="userImages"></div>
   </div>
 
   <div ng-show="panel.isSelected(2)" ng-controller='locationController'>
       <form name="inputLocation" ng-submit="getLocFeed(loc)">
-          <input ng-model="loc" placeholder="enter location">
+          <input ng-model="loc" placeholder="Enter location">
           <button>get location stuff</button>
       </form>
    
-    <div id="locationChart"></div>
+    <div id="locationChart">
+      <table>
+        <tr>
+          <td ng-repeat="image in instaImages">
+            <img src="image[0]">
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <script src="../bower_components/angular/angular.js"></script>

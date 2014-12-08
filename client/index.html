@@ -1,79 +1,53 @@
 <!doctype html>
 <html lang="en" ng-app='omnigrahm'>
 <head>
-    <title>omnigrahm</title>
- 
-    <meta charset="UTF-8">
-    <!--   // getObjectsByLocation("San Francisco");
-      // getUserFeed(); -->
-   <!--
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <title>omnigrahm</title>
 
-    -->
+  <meta charset="UTF-8">
+  <link href="../bower_components/c3/c3.css" rel="stylesheet" type="text/css">
 
 </head>
+<!-- <<<<<<< HEAD
 <body>
 
   <div class="indexView" ui-view></div>
 
   <body>
-    <div ng-controller='locController'>
+  
+
+      <script src="../bower_components/angular/angular.js"></script>
+  <!-- // <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script> -->
+<body ng-controller="PanelController as panel">
+  <button ng-click="panel.selectTab(1)">USER</button>
+  <button ng-click="panel.selectTab(2)">LOCATION</button>
+  <!-- <div class="indexView" ui-view></div> -->
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='showGraph()'>
+    
+    <button ng-click='getUserFeed()'>Get Stuff</button>
+    <div>{{objects}}</div>
+    <div id="userChart"></div>
+  </div>
+
+  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init='showGraph()'>
       <form name="inputLocation" ng-submit="getLocFeed(loc)">
           <input ng-model="loc" placeholder="enter location">
           <button>get location stuff</button>
       </form>
-    </div>
-    <div ng-controller='userController'>
-      <button ng-click='getUserFeed()'>get stuff</button>
-      <!-- <div>{{objects}}</div> -->
-    </div>
+   
 
-      <script src="../bower_components/angular/angular.js"></script>
-  <!-- // <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script> -->
+    <div id="locationChart"></div>
+  </div>
+
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
   <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="../bower_components/oauth-js/dist/oauth.min.js"></script>
+  <script src="../bower_components/d3/d3.min.js"></script>
+  <script src="../bower_components/c3/c3.min.js"></script>
 
-  <script src="../user/user.js"></script>
-  <script src="../location/location.js"></script>
+  <script src="./user/user.js"></script>
+  <script src="./location/location.js"></script>
 
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
-
-
-
-
-
-<!-- <!doctype html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-
-	  <script>
-
-      // getObjectsByLocation("San Francisco");
-      // getUserFeed();
-      
-    </script>
-   
-    <script src="../bower_components/angular/angular.js"></script>
-    // <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-
-    
-
-</head>
-<body ng-app="omnigrahm">
-  <div ui-view></div>
-
-   <script>
-      
-      // getObjectsByLocation("San Francisco");
-      // getUserFeed();
-    </script>
-
-</body>
-</html>
- -->

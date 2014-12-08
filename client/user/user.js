@@ -14,7 +14,7 @@ angular.module('omnigrahm.user', [])
     $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
     console.log($scope.chartData.x);
     showGraph();
-    // showImages(images);
+    showImages(images);
   };
 //
   $scope.chartData = {
@@ -58,11 +58,11 @@ angular.module('omnigrahm.user', [])
     });
   };
 
-  // var showImages = function(images) {
-  //   for (var i = 0; i < Things.length; i++) {
-  //     Things[i]
-  //   };
-  // };
+  var showImages = function(images) {
+    for (var i = 0; i < Things.length; i++) {
+      Things[i]
+    };
+  };
 
   $scope.getUserFeed = function(userId) {
 		OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');

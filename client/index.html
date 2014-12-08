@@ -12,10 +12,10 @@
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()' ng-submit='getUserFeed(enteredName)'>
     <form>
-      <input>
-      <button ng-click='getUserFeed()'>Get Stuff</button>
+      <input ng-model="enteredName" placeholder="enter username">
+      <button ng-click='getUserFeed()'>Get User Feed</button>
     </form>
 
     <div id="userChart"></div>

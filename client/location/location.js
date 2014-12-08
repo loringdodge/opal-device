@@ -17,7 +17,7 @@ angular.module('omnigrahm.location', [])
 				var lng = data.results[0].geometry.location.lng;
 
 				//get media from city
-				result.get('https://api.instagram.com/v1/media/search?lat=' + lat + '&lng=' + lng + '&client_id=0818d423f4be4da084f5e4b446457044&count=1')
+				result.get('https://api.instagram.com/v1/media/search?lat=' + lat + '&lng=' + lng + '&client_id=0818d423f4be4da084f5e4b446457044&count=20')
 				.done(function(locObjects) {
 
 					locObjects.data.forEach(function(obj) {

@@ -84,33 +84,26 @@ angular.module('omnigrahm.user', [])
                   for each object returned. getSentiment() returns string. getPosNeg() returns sentiment object.
                   push to the userObjects[i]. post to /api/instagram the whole object
               */
-              // var objectToSave;
-              // for (var i = 0; i < userObjects.data.length; i++) {
                 userObjects.data.forEach(function(obj) {
-                // objectToSave = userObjects.data[i];
-                // objectToSave = obj;
-                console.log(obj);
                 var caption = getCaptionString(obj);
 
                 //api call 
-                var string = caption.replace(' ', '%20');
+                if (caption) {
+                  var string = caption.replace('#', ' ');
+                  console.log(string);
+                } else {
+                  string = '';
+                }
                 $http.get('https://twinword-sentiment-analysis.p.mashape.com/analyze/?text=' + string, {
                   headers: { 'X-Mashape-Key': 'bZKtaWEZMmmshwTi4qO4XJhxvNfCp13uY3yjsnYweDF3s3S2Bw'}
                 })
                 .success(function(data) {
                   obj['sentiment'] = data;
-
                   //post to /api/instagram individual objects
                   $http.post('/api/instagram', JSON.stringify(obj))
                   .success(function(data, status, headers, config) {
-                    console.log('posted!!!');
-                    // console.log(data);
-                    // this callback will be called asynchronously
-                    // when the response is available
                   })
                   .error(function(data, status, headers, config) {
-                      // called asynchronously if an error occurs
-                      // or server returns response with an error status.
                   })
                 })                  
               });
@@ -217,7 +210,9 @@ angular.module('omnigrahm.user', [])
   };
 
   var getCaptionString = function(instaObj) {
+    if (instaObj.caption) {
     return instaObj.caption.text;
+    }
   };
 
   var getImages = function(data) {

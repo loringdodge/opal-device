@@ -25,9 +25,13 @@ angular.module('omnigrahm.location', [])
 			    	  // objectToSave = obj;
 			    	  // console.log(obj);
 			    	  var caption = getCaptionString(obj);
-
 			    	  //api call 
-			    	  var string = caption.replace(' ', '%20');
+			    	  var caption = getCaptionString(obj);
+			    	  if (caption) {
+			    	    var string = caption.replace('#', ' ');
+			    	  } else {
+			    	    string = '';
+			    	  }
 			    	  $http.get('https://twinword-sentiment-analysis.p.mashape.com/analyze/?text=' + string, {
 			    	  	headers: { 'X-Mashape-Key': 'bZKtaWEZMmmshwTi4qO4XJhxvNfCp13uY3yjsnYweDF3s3S2Bw'}
 			    	  })
@@ -37,17 +41,9 @@ angular.module('omnigrahm.location', [])
 			    	  	var coord = [lng,lat];
 			    	  	obj['location'] =  { "type": "Point", "coordinates": coord };
 			    	  	console.log(obj);
-			    	    //var stringifiedObj = JSON.stringify(obj);
-			    	    // console.log(stringifiedObj);
-			    	    // var instagramObj = new InstagramSchema(stringifiedObj);
 			    	    //post to /api/instagram individual objects
 			    	    $http.post('/api/instagram', obj)
 			    	    .success(function(data, status, headers, config) {
-			    	    	console.log(data, status, headers, config); 		
-			    	    	console.log('posted!!!');
-			    	      // console.log(data);
-			    	      // this callback will be called asynchronously
-			    	      // when the response is available
 				    	  })
 				    	    .error(function(data, status, headers, config) {
 				    	        // called asynchronously if an error occurs
@@ -58,7 +54,7 @@ angular.module('omnigrahm.location', [])
 
 				}).fail(function(err) {
 					    	//error
-		    		});
+	    		});
 			});
 		});
 	};

@@ -42,7 +42,7 @@ angular.module('omnigrahm.location', [])
 			    	  	obj['location'] =  { "type": "Point", "coordinates": coord };
 			    	  	console.log(obj);
 			    	    //post to /api/instagram individual objects
-			    	    $http.post('/api/instagram', obj)
+			    	    $http.post('/api/instagram', JSON.stringify(obj))
 			    	    .success(function(data, status, headers, config) {
 				    	  })
 				    	    .error(function(data, status, headers, config) {

@@ -31,12 +31,13 @@ angular.module('omnigrahm.location', [])
 			    	  .success(function(data) {
 			    	    obj['sentiment'] = data;
 			    	    console.log(obj);
-			    	    var stringifiedObj = JSON.stringify(obj);
+			    	    //var stringifiedObj = JSON.stringify(obj);
 			    	    // console.log(stringifiedObj);
 			    	    // var instagramObj = new InstagramSchema(stringifiedObj);
 			    	    //post to /api/instagram individual objects
 			    	    $http.post('/api/instagram', obj)
 			    	    .success(function(data, status, headers, config) {
+			    	      console.log(data, status, headers, config); 		
 			    	      console.log('posted!!!');
 			    	      // console.log(data);
 			    	      // this callback will be called asynchronously

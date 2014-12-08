@@ -7,34 +7,27 @@
   <link href="../bower_components/c3/c3.css" rel="stylesheet" type="text/css">
 
 </head>
-<!-- <<<<<<< HEAD
-<body>
 
-  <div class="indexView" ui-view></div>
-
-  <body>
-  
-
-      <script src="../bower_components/angular/angular.js"></script>
-  <!-- // <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script> -->
 <body ng-controller="PanelController as panel">
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='showGraph()'>
-    
-    <button ng-click='getUserFeed()'>Get Stuff</button>
-    <div>{{objects}}</div>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()' ng-submit='getUserFeed(enteredName)'>
+    <form>
+      <input ng-model="enteredName" placeholder="enter username">
+      <button ng-click='getUserFeed()'>Get User Feed</button>
+    </form>
+
     <div id="userChart"></div>
+    <div id="userImages"></div>
   </div>
 
-  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init='showGraph()'>
+  <div ng-show="panel.isSelected(2)" ng-controller='locationController'>
       <form name="inputLocation" ng-submit="getLocFeed(loc)">
           <input ng-model="loc" placeholder="enter location">
           <button>get location stuff</button>
       </form>
    
-
     <div id="locationChart"></div>
   </div>
 

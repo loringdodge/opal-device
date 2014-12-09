@@ -13,25 +13,33 @@
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()' ng-submit='getUserFeed(enteredName)'>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
     <form>
-      <input ng-model="enteredName" placeholder="enter username">
-      <button ng-click='getUserFeed()'>Get User Feed</button>
+      <input ng-model="user" placeholder="Enter username">
+      <button ng-click='getUserFeed(user)'>Get Stuff</button>
     </form>
-
     <div id="userChart"></div>
-    <div id="userImages"></div>
+    <div id="userImages" class="imageScroll">
+      <table>
+        <tr>
+          <td ng-repeat="image in instaImages">
+            <img ng-src="{{image[0]}}"/>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init="getLocFeed()">
       <form name="inputLocation" ng-submit="getLocFeed(loc)">
-          <input ng-model="loc" placeholder="enter location">
+          <input ng-model="loc" placeholder="Enter location">
           <button>get location stuff</button>
       </form>
    
     <div id="locationChart"></div>
     <div class="imageScroll">
       <table>
+        <th>Happy</th>
         <tr>
           <td ng-repeat="picture in images.positive track by $index" ng-click="redirect(picture[1])">
             <img ng-src="{{picture[0]}}"></img>
@@ -41,6 +49,7 @@
     </div>
     <div class="imageScroll">
       <table>
+        <th>Sad</th>
         <tr>
           <td ng-repeat="picture in images.negative track by $index" ng-click="redirect(picture[1])">
             <img ng-src="{{picture[0]}}"></img>

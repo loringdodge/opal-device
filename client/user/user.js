@@ -1,23 +1,29 @@
 angular.module('omnigrahm.user', [])
 .controller('userController', function($scope, $http) {
 
-  $scope.dates, $scope.positiveData, $scope.negativeData;
+  $scope.instaImages = [];
+
+  // var arrayOfInstagrams = [];
+
   var updateData = function(data) {
     var result = getData(data);
-    var dateData = result[0];
-    var positiveData = result[1];
-    var negativeData = result[2];
+    console.log("results after getData()", result);
+    var dateData = ['x'].concat(result[0]);
+    var positiveData = ['positive'].concat(result[1]);
+    var negativeData = ['negative'].concat(result[2]);
     var images = result[3];
-    $scope.chartData.x = $scope.chartData.x.concat(dateData);
-    $scope.chartData.positive = $scope.chartData.positive.concat(positiveData);
-    $scope.chartData.negative = $scope.chartData.negative.concat(negativeData);
+    $scope.chartData.x = dateData;
+    $scope.chartData.positive = positiveData;
+    $scope.chartData.negative = negativeData;
+    console.log($scope.chartData.x);
     showGraph();
     showImages(images);
   };
+
   $scope.chartData = {
-    x: ['x'],
-    positive: ['positive'],
-    negative: ['negative']
+    x: [],
+    positive: [],
+    negative: []
   };
 
   var showGraph = function() {
@@ -55,8 +61,8 @@ angular.module('omnigrahm.user', [])
   };
 
   var showImages = function(images) {
-    for (var i = 0; i < Things.length; i++) {
-      Things[i]
+    for (var i = 0; i < images.length; i++) {
+      $scope.instaImages.push(images[i]);
     };
   };
 
@@ -64,10 +70,13 @@ angular.module('omnigrahm.user', [])
 		OAuth.initialize('mjBY4FTkZ4yHocgHANa2ix7-m5w');
 		var provider = 'instagram';
 
+    username = username || "floofydoug"
+
     console.log(username);
 
     var userId = userId || 217257560;
     var arr = [];
+
     OAuth.popup(provider)
     .done(function(result) {
 
@@ -85,6 +94,7 @@ angular.module('omnigrahm.user', [])
                   push to the userObjects[i]. post to /api/instagram the whole object
               */
                 userObjects.data.forEach(function(obj) {
+
                 var caption = getCaptionString(obj);
 
                 //api call 
@@ -99,6 +109,7 @@ angular.module('omnigrahm.user', [])
                 })
                 .success(function(data) {
                   obj['sentiment'] = data;
+
                   arr.push(obj);
                     // console.log('theLast', userObjects.data.indexOf(obj));
 
@@ -135,15 +146,15 @@ angular.module('omnigrahm.user', [])
         
         //post to api/instagram -fix so only queries for user
      //    $http.get('/api/instagram') //, {params: { user_id: result.user.id } }
-			  // .success(function(data, status, headers, config) {
+        // .success(function(data, status, headers, config) {
      //      //gets stuff back from the user
      //      // $scope.data = data;
-			  // 	console.log('gets objects back');
-			  // 	console.log(data);
+        //  console.log('gets objects back');
+        //  console.log(data);
      //      updateData(data);
-			  // })
+        // })
      //    //error on /api/instagram query
-			  // .error(function(data, status, headers, config) {
+        // .error(function(data, status, headers, config) {
      //      //query instagram for user stuff
      //      result.get('https://api.instagram.com/v1/users/' + userId + '/media/recent/?client_id=0818d423f4be4da084f5e4b446457044&count=5')
      //      .done(function(userObjects) {
@@ -184,47 +195,65 @@ angular.module('omnigrahm.user', [])
      //            })                  
      //          }); //end of for loop
      //      });
-			  // 	console.log('not found');
-			  //   // log error
-			  // });
+        //  console.log('not found');
+        //   // log error
+        // });
         //end of error
 
-		}).fail(function(err) {
-		  //fail of Oauth
-		});
+    }).fail(function(err) {
+      //fail of Oauth
+    });
+
   };
 
   var getData = function(data) {
-    var posSum = [0];
-    var negSum = [0];
+    var arrayDate = [];
+    var arrayPosSum = [];
+    var arrayNegSum = [];
     var dates = [];
-    var syncIndex = 0;
-    var currDate = null;
+    // var syncIndex = 0;
+    // var currDate = null;
+    var storage = {};
     var images = [];
     for (var i = 0; i < data.length; i++) {
       var instagram = data[i];
-      var date = new Date(data[i].created_time * 1000);
-      var month = date.getMonth() + 1;
-      var instagramDate = date.getFullYear() + '-' + month;
+      var date = new Date(instagram.created_time * 1000);
+      var instagramDate = date.getFullYear() + '-' + (date.getMonth() + 1);
       var sentiment = instagram.sentiment.type;
       if (sentiment === 'neutral') continue;
       images.push(getImages(instagram));
       //Initialize current date 
-      if (!currDate) {
-        currDate = instagramDate;
-        dates.push(currDate + '-01');
+
+      if (Object.keys(storage).length === 0) {
+        storage[instagramDate] = [0, 0];
       }
-      if (instagramDate !== currDate) {
-        currDate = instagramDate;
-        dates.push(currDate + '-01');
-        syncIndex++;
-        posSum[syncIndex] = 0;
-        negSum[syncIndex] = 0;
+
+      var scanner = false;
+      for (var key in storage) {
+        if (key === instagramDate) {
+          scanner = true;
+        }
       }
-      if (sentiment === "positive") posSum[syncIndex]++;
-      else if (sentiment === "negative") negSum[syncIndex]--;
+
+      if (!scanner) {
+        storage[instagramDate] = [0, 0];
+      }
+
+      if (sentiment === "positive") {
+        storage[instagramDate][0]++;
+      } else if (sentiment === "negative") {
+        storage[instagramDate][1]--;
+      }
+
     };
-    return [dates, posSum, negSum, images];
+    console.log("STORAGE", storage);
+    for (var x in storage) {
+      arrayDate.push(x + '-01');
+      arrayPosSum.push(storage[x][0]);
+      arrayNegSum.push(storage[x][1]);
+    }
+
+    return [arrayDate, arrayPosSum, arrayNegSum, images];
   };
 
   var getCaptionString = function(instaObj) {

@@ -1,11 +1,11 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var sentiment = require('./api/router');
-var config = require('./config/environment/development');
+var sentiment = require('./server/api/router');
+var config = require('./server/config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
-var Instagram = require("./api/instagram/instagramModel");
+var Instagram = require("./server/api/instagram/instagramModel");
 
 var app = express();
 
@@ -41,15 +41,19 @@ app.post('/api/instagram', jsonParser, function (req, res) {
     });	
 })
 
-require('./routes')(app);
+//require('./server/routes')(app);
 
-app.use(express.static(path.join(__dirname, '/../client')));
+app.use('/api/instagram', require('./server/api/instagram'));
+app.use('/api/user', require('./server/api/user')); 
+
+app.use(express.static(path.join(__dirname, '/client')));
 
 // sentiment.getSentiment("I HATE YOU");
 
 //require models
 
-app.listen(3000);
+app.listen(config.port);
+console.log(config); 
 
 
 exports = module.exports = app;

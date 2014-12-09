@@ -175,7 +175,7 @@ angular.module('omnigrahm.user', [])
     result[0] = data.images.thumbnail.url;
     result[1] = data.images.standard_resolution.url;
     return result;
-  }
+  };
 
 });
 

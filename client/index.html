@@ -12,13 +12,21 @@
   <button ng-click="panel.selectTab(1)">USER</button>
   <button ng-click="panel.selectTab(2)">LOCATION</button>
   <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()' ng-submit='getUserFeed(enteredName)'>
+  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
     <form>
       <input ng-model="user" placeholder="Enter username">
       <button ng-click='getUserFeed(user)'>Get Stuff</button>
     </form>
     <div id="userChart"></div>
-    <div id="userImages"></div>
+    <div id="userImages">
+      <table>
+        <tr>
+          <td ng-repeat="image in instaImages">
+            <img ng-src="{{image[0]}}"/>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <div ng-show="panel.isSelected(2)" ng-controller='locationController'>
@@ -28,13 +36,6 @@
       </form>
    
     <div id="locationChart">
-      <table>
-        <tr>
-          <td ng-repeat="image in instaImages">
-            <img src="">
-          </td>
-        </tr>
-      </table>
     </div>
   </div>
 

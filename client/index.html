@@ -5,6 +5,7 @@
 
   <meta charset="UTF-8">
   <link href="../bower_components/c3/c3.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -29,18 +30,24 @@
       </form>
    
     <div id="locationChart"></div>
-    <table>
-      <tr class="imageScroll">
-        <td ng-repeat="picture in images.positive track by $index" ng-click="redirect(picture[1])">
-          <img ng-src="{{picture[0]}}"></img>
-        </td>
-      </tr>
-      <tr class="imageScroll">
-        <td ng-repeat="picture in images.negative track by $index" ng-click="redirect(picture[1])">
-          <img ng-src="{{picture[0]}}"></img>
-        </td>
-      </tr>
-    </table>
+    <div class="imageScroll">
+      <table>
+        <tr>
+          <td ng-repeat="picture in images.positive track by $index" ng-click="redirect(picture[1])">
+            <img ng-src="{{picture[0]}}"></img>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="imageScroll">
+      <table>
+        <tr>
+          <td ng-repeat="picture in images.negative track by $index" ng-click="redirect(picture[1])">
+            <img ng-src="{{picture[0]}}"></img>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <script src="../bower_components/angular/angular.js"></script>

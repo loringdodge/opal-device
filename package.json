@@ -1,7 +1,7 @@
 {
   "name": "OPAL-DEVICE",
   "version": "1.0.0",
-  "description": "Twitter Behavior",
+  "description": "Instagram Behavior",
   "main": "index.js",
   "dependencies": {
     "express": "4.10.4",
@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/OPAL-DEVICE/OPAL-DEVICE", 
   "engines":{
-      "node": "0.8.x||0.6.22 "
+      "node": "0.10.32"
   }
 }

@@ -96,6 +96,17 @@ $scope on USER view has these main properties:
 .chart - appears to be a d3 or c3 node
 
 
+ROUTING:
+
+
+- '/' - serve static assets like index.html
+  - this includes serving up our 'top30' 
+- '/instagram' - respond to requests for specific cities
+  - what city is being searched for?
+  - if not memoized - fetch data from Instagram API. memoize it. (can be skipped in version 1.0)
+  - serve memoized files from DB to client (can happen simultaneously with last step)
+
+
 
 
 

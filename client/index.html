@@ -10,25 +10,7 @@
 </head>
 
 <body ng-controller="PanelController as panel">
-  <button ng-click="panel.selectTab(1)">USER</button>
-  <button ng-click="panel.selectTab(2)">LOCATION</button>
-  <!-- <div class="indexView" ui-view></div> -->
-  <div ng-show="panel.isSelected(1)" ng-controller='userController' ng-init='getUserFeed()'>
-    <form>
-      <input ng-model="user" placeholder="Enter username">
-      <button ng-click='getUserFeed(user)'>Get Stuff</button>
-    </form>
-    <div id="userChart"></div>
-    <div id="userImages" class="imageScroll">
-      <table>
-        <tr>
-          <td ng-repeat="image in instaImages">
-            <img ng-src="{{image[0]}}"/>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
+  <button ng-click="panel.selectTab(2)">LOCATION</button>  
 
   <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init="getLocFeed()">
       <form name="inputLocation" ng-submit="getLocFeed(loc)">
@@ -67,7 +49,6 @@
   <script src="../bower_components/c3/c3.min.js"></script>
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
-  <script src="./user/user.js"></script>
   <script src="./location/location.js"></script>
 
   <script src="./app.js"></script>

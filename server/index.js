@@ -1,34 +1,33 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var sentiment = require('./server/api/router');
-var config = require('./server/config/environment/production');
+var config = require('./config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
-var Instagram = require("./server/api/instagram/instagramModel");
-var instagramRouter = require("./server/api/instagram");
-var sentimentRouter = require("./server/api/sentiment");
-
-var app = express();
-
-mongoose.connect(config.mongo.uri, config.mongo.options);
-
-if (config.seedDB) { require('./config/seed'); }
-
-app.use(bodyParser.urlencoded({ extended: false }))
-
+//var instagramRouter = require("./api/instagram");
+//var sentimentRouter = require("./api/sentiment");
 var jsonParser = bodyParser.json()
 
 
-app.use('/api/instagram', instagramRouter));
-app.use('/api/sentiment', sentimentRouter));
-app.use(express.static(path.join(__dirname, '/client')));
+mongoose.connect(config.mongo.uri, config.mongo.options);
+
+if (config.seedDB){
+ require('./config/seed'); 
+}
+
+var app = express();
+app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in the right place?
+   //.use('/api/instagram', instagramRouter)  
+   //.use('/api/sentiment', sentimentRouter)
+   .use(express.static(path.resolve(__dirname + '/../client/')))
+   .use('*', function (req, res) {
+     res.status(404).end();
+   })
+   .listen(3000);
+console.log("server listening on port " + 3000);
 
 
 
-app.listen(config.port);
-
-exports = module.exports = app; //is this needed?
 
 
 /**

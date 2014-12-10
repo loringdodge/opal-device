@@ -1,1 +1,2 @@
-//redirect to server/index.js
+// Adding this for Azure
+require('./server/index.js');

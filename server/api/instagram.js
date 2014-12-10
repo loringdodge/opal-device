@@ -3,23 +3,22 @@
 var express = require('express');
 var instagramRouter = express.Router();
 
-router.get('/', function(req,res){
+instagramRouter.get('/', function(req,res){
   //controller.findAll (OLD CODE)
 
   // serve up top 30 cities
 } );
 
 
-router.get('/:placeId', function(req, res){
+instagramRouter.get('/:placeId', function(req, res){
   //get instagrams by a specific placeId
   
   // controller.findInstagramByLocation
 }); 
 
-module.exports = instagramRouter; 
 
 
-/***************** instagramController.JS
+/* **************** instagramController.JS
 
 
 
@@ -120,4 +119,6 @@ app.post('/api/instagram', jsonParser, function (req, res) {
       // return res.json(201, instagram);
     }); 
 })
+
+*/
 

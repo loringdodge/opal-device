@@ -19,5 +19,6 @@
     "angular-bootstrap": "~0.12.0",
     "oauth-js": "~0.3.0",
     "ngAutocomplete": "~1.0.0"
+    "jquery": "~2.1.1"
   }
 }

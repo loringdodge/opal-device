@@ -22,6 +22,22 @@ instagramRouter.get('/:placeId', function(req, res){
 
 
 
+// From instagram/index.js
+'use strict'; 
+
+var express = require('express');
+var controller = require('./instagramController');
+
+var router = express.Router();
+
+router.get('/', controller.findAll);
+//router.post('/', controller.createInstagram);
+router.get('/:latlng', controller.findInstagramByLocation); //concat latlng into "lat&lng"
+
+module.exports = router; 
+
+
+// From instagram/instagramController
 var Instagram = require("./instagramModel");
 
 module.exports = {
@@ -66,6 +82,7 @@ module.exports = {
 
 ****************** instagramModel
 
+// From instagram/instagramMode.js
 var mongoose = require("mongoose");
 
 var InstagramSchema = new mongoose.Schema({

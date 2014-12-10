@@ -15,6 +15,9 @@ angular.module('omnigrahm.location', [])
   $scope.redirect = function(link) {
     window.open(link);
   };
+
+
+
   var showGraph = function() {
   	c3.generate({
 	    bindto: '#locationChart',
@@ -129,6 +132,7 @@ angular.module('omnigrahm.location', [])
 			    	  // objectToSave = userObjects.data[i];
 			    	  // objectToSave = obj;
 			    	  // console.log(obj);
+
 			    	  //Only run this if instagram has a caption
 			    	  if (obj.caption) {
 				    	  var caption = getCaptionString(obj);
@@ -186,21 +190,34 @@ angular.module('omnigrahm.location', [])
 		});
 		// parseData(cityName);
 	};
+
 	var getCaptionString = function(instaObj){
 		return instaObj.caption.text;
 	};
+
 	var getImages = function(data){
 	    var result = [];
 	    result[0] = data.images.thumbnail.url;
 	    result[1] = data.link;
 	    return result;
   	};
-  	var containsLink = function(arr, targetLink) {
-  		for (var i = 0; i < arr.length; i++) {
-  			if (arr[i].link === targetLink) return true;
-  		}
-  		return false;
-  	};
+
+	var containsLink = function(arr, targetLink) {
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i].link === targetLink) return true;
+		}
+		return false;
+	};
+
+  $scope.printScope = function(){
+    console.log("printing out scope data...");
+    for(var key in $scope){
+      if($scope.hasOwnProperty(key)){
+        console.log(key, $scope[key]);
+      }
+    }
+  }
+
 
 
 }); //end of .controller

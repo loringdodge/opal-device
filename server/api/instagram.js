@@ -3,7 +3,7 @@ var utils = require('utils');
 var mongoose = require('mongoose');
 var sentiment = require('sentiment');
 var Promise = require('bluebird');
-var request = require('request');
+var request = Promise.promisifyAll(require('request'));
 var Cities = Promise.promisifyAll(mongoose.model("Cities"));
 
 var InstagramRouter = express.Router();
@@ -30,20 +30,25 @@ InstagramRouter.get('/:id', function(req, res){
   var clientId = '0818d423f4be4da084f5e4b446457044';
   var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + lat;
       apiUrl += '&lng=' + lng + '&client_id=' + clientId + '&count=20';
-  request(apiUrl, function(err, res, body){
-    if(err) {
-      console.log("Error: " err);
-    }
-    if(res.statusCode == 400){
+  requestAsync(apiUrl)
+    .then(function (res, body) {
+      if(res.statusCode == 400) throw new Error('400 error on request');
+      var sentiments = body.map(body, function(photo){
+        var caption = photo.get('caption');
+        return sentiment.score(caption);
+      });
+      return requestAsync('http://google.com');
+    })
+    .then(function () {
+      return requestAsync('http://twitter.com');
+    })
+    .then(function () {
+      
+    })
+    .catch(function (err) {
+      console.log("Error: " + err);
       return utils.send404(res);
-    }
-    body.forEach(body, function(photo){
-      var caption = photo.get('caption');
-      return sentiment.score(caption);
     });
-    return res.json(body);
-  })
-
 });
 
 module.exports = InstagramRouter;

@@ -8,6 +8,7 @@ describe('Server Processes', function () {
   	it('should get all instagram Top 30', function (done) {
 
     });
+
     it('should get data for a specific city', function (done) {
 
     });
@@ -18,13 +19,21 @@ describe('Server Processes', function () {
 
     });
 
-    it('should return an object with a sentiment score attached', function (done) {
+    it('should return the original message', function (done) {
+
+    });
+
+    it('should return with a sentiment score attached', function (done) {
 
     });
   });
 
   describe('Mongoose', function () {
     it('should write to the database', function (done) {
+
+    });
+
+    it('should fetch data for a single city', function (done) {
 
     });
 

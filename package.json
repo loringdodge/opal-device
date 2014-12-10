@@ -13,7 +13,10 @@
     "unirest": "0.3.0"
   },
   "devDependencies": {
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "gulp": "^3.8.10",
+    "gulp-sass": "^1.2.4",
+    "gulp-watch": "^3.0.0",
   },
   "scripts": {
     "test": "mocha"

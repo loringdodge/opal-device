@@ -269,6 +269,15 @@ angular.module('omnigrahm.user', [])
     return result;
   };
 
+  $scope.printScope = function(){
+    console.log("printing out scope data...");
+    for(var key in $scope){
+      if($scope.hasOwnProperty(key)){
+        console.log(key, $scope[key]);
+      }
+    }
+  }
+
 });
 
 

@@ -6,6 +6,9 @@ var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
 var Instagram = require("./server/api/instagram/instagramModel");
+var newSentiment = require('sentiment');
+
+
 
 var app = express();
 
@@ -16,6 +19,13 @@ if (config.seedDB) { require('./config/seed'); }
 app.use(bodyParser.urlencoded({ extended: false }))
 
 var jsonParser = bodyParser.json()
+
+console.log(newSentiment("I love everyone"));
+console.log(newSentiment("love love love amazing yes yes happy happy"));
+console.log(newSentiment("meh"));
+console.log(newSentiment("rocks trees elephant hippo"));
+console.log(newSentiment(""));
+console.log(newSentiment("crap stupid angry bad yuck poop stupid"));
 
 app.post('/api/instagram', jsonParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)

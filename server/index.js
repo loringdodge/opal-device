@@ -26,12 +26,9 @@ app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in th
    .listen(config.port);
 console.log("server listening on port " + config.port);
 
-var announceTime = function(){
-  console.log("It's been 1 minute!")
-};
 
-var job1 = crontab.scheduleJob("* * * * *", function(){ //This will call this function every 1 minute
-    announceTime();
+var placeholderCronJob = crontab.scheduleJob("0 0 * * *", function(){
+   console.log("It's midnight!")
 });
 
 

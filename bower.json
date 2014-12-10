@@ -2,7 +2,7 @@
   "name": "OPAL-DEVICE",
   "version": "0.0.0",
   "homepage": "https://github.com/OPAL-DEVICE/OPAL-DEVICE",
-  "description": "Twitter Behavvior",
+  "description": "Twitter Behavior",
   "main": "app.js",
   "license": "MIT",
   "ignore": [

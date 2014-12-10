@@ -5,7 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
 //var instagramRouter = require("./api/instagram");
-//var sentimentRouter = require("./api/sentiment");
+var sentimentRouter = require("./api/sentiment");
 var jsonParser = bodyParser.json()
 
 
@@ -18,13 +18,13 @@ if (config.seedDB){
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in the right place?
    //.use('/api/instagram', instagramRouter)  
-   //.use('/api/sentiment', sentimentRouter)
+   .use('/api/sentiment', sentimentRouter)
    .use(express.static(path.resolve(__dirname + '/../client/')))
    .use('*', function (req, res) {
      res.status(404).end();
    })
-   .listen(3000);
-console.log("server listening on port " + 3000);
+   .listen(config.port);
+console.log("server listening on port " + config.port);
 
 
 

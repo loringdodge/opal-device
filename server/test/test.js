@@ -1,19 +1,23 @@
 var should = require('should');
 var expect = require('chai').expect;
-var request = require('request');
+var request = require('super-request');
+var app = require('../index');
+
 
 describe('Server Processes', function () {
 
   describe('Instagram', function () {
   	it('should get all instagram Top 30', function (done) {
-  		request.get('http://localhost:3000/instagram/',
-  			function(err, res, body){
-  				var json = JSON.parse(body);
-          expect(response.statusCode).to.equal(200);
-          expect(json).to.be.a.Array;
-          expect(json).to.have.length(20);
-  			}
-  		);
+  		request(app)
+	      .get('/api/instagram')
+	      .expect(200)
+	      .end(function (err, res, body) {
+	      	var json = JSON.parse(body);
+	      	json.should.have.property('cities');
+	      	json.cities.should.be.instanceof(Array);
+	      	json.cities.length.should.equal(30);
+	      	done();
+	      });
     });
 
     it('should get data for a specific city', function (done) {
@@ -23,43 +27,18 @@ describe('Server Processes', function () {
 	        "lat": 30.0274371,
 	        "id": "ChIJf3IkFlwyP4YREwKBdv391Bs"
 	    }
-    	request.get('http://localhost:3000/instagram/' + data.id,
-  			function(err, res, body){
-  				var json = JSON.parse(body);
-          expect(response.statusCode).to.equal(200);
-
-  			}
-  		);
+  		request(app)
+	      .get('/api/instagram/' + data.id)
+	      .expect(200)
+	      .end(function (err, res, body) {
+	      	var json = JSON.parse(body);
+	      	json.should.be.instanceof(Object);
+	      	json.should.have.property('id');
+	      	json.should.have.property('lat');
+	      	json.should.have.property('lng');
+	      	done();
+	      });
     });
-  });
-
-  describe('Sentiment', function () {
-  	it('should return a JSON object', function (done) {
-
-    });
-
-    it('should return the original message', function (done) {
-
-    });
-
-    it('should return with a sentiment score attached', function (done) {
-
-    });
-  });
-
-  describe('Mongoose', function () {
-    it('should write to the database', function (done) {
-
-    });
-
-    it('should fetch data for a single city', function (done) {
-
-    });
-
-    it('should fetch all data from Top 30 cities', function (done) {
-
-    });
-
   });
 
 });

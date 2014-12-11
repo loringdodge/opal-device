@@ -13,6 +13,8 @@ if (config.seedDB){
  require('./config/seed'); 
 }
 
+console.log('ENV: ', process.env.NODE_ENV);
+
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in the right place?
    .use('/api/instagram', instagramRouter)  
@@ -27,8 +29,6 @@ console.log("server listening on port " + config.port);
 var placeholderCronJob = crontab.scheduleJob("0 0 * * *", function(){
    console.log("It's midnight!")
 });
-
-
 
 /**
  * Main application routes - formerly housed somewhere else

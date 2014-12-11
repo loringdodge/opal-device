@@ -3,7 +3,7 @@ var utils = require('./utils');
 var mongoose = require('mongoose');
 var sentiment = require('./sentiment');
 var Promise = require('bluebird');
-var request = Promise.promisifyAll(require('request'));
+var request = Promise.promisify(require('request'));
 var Cities = Promise.promisifyAll(mongoose.model("Cities"));
 
 var InstagramRouter = express.Router();
@@ -51,8 +51,6 @@ InstagramRouter.get('/:id', function(req, res){
 
 InstagramRouter.post('/:id', function(req, res){
   console.log("post request received at api/instagram/:id");
-  console.log(req.body);
-  return utils.send404(res);
 
   var placeId = req.body.placeId;
   var lng = req.body.lng;
@@ -64,15 +62,52 @@ InstagramRouter.post('/:id', function(req, res){
   var clientId = '0818d423f4be4da084f5e4b446457044';
   var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + lat;
       apiUrl += '&lng=' + lng + '&client_id=' + clientId + '&count=20';
-  requestAsync(apiUrl)
+  request(apiUrl)
     .then(function (res, body) {
       if(res.statusCode == 400) throw new Error('400 error on request');
-      console.log(body);
-      //process messages through sentiment
+      var messages = JSON.parse(res[0].body).data;
+      
+      var parsedMessages = messages.map(function(message){
+        var text = message.caption ? message.caption.text : "";
+        return {
+          text: text,
+          url: message.link,
+          sentiment: sentiment(text)
+        }
+      })
+
+      //create new city record
+      var cityRecord = {
+        city: name,
+        lat: lat,
+        lng: lng,
+        placeId: placeId,
+        total_positives :0,
+        total_negatives :0,
+        total_neutrals : 0,
+        total_searched : parsedMessages.length,
+        photo_urls : []
+      }
+
+      //iterate through messages to further populate city record
+      parsedMessages.forEach(function(message){
+        sentiment = message.sentiment;
+        cityRecord.photo_urls.push(message.url);
+        if(sentiment>0) cityRecord.total_positives ++;
+        else if(sentiment<0) cityRecord.total_negatives ++;
+        else cityRecord.total_neutrals ++;
+      })
+
+      console.log(cityRecord);
+
+      //add city record to DB.
+      //var cityForDb = new Cities({});
+      //console.log(cityForDb);
+
     })
     .catch(function (err) {
       console.log("Error: " + err);
-      return utils.send404(res);
+       return utils.send404(res);
     });
 });
 

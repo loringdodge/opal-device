@@ -107,6 +107,17 @@ ROUTING:
   - serve memoized files from DB to client (can happen simultaneously with last step)
 
 
+CRON:
+
+every day, at midnight:
+
+- empty out the database
+- run a query for each of the top cities.
+  - get 30 pages of results.
+  - (20 msgs each = 600 points per city)
+  - 600*30 = 18000 msgs total
+  - compress that data and store it in the server
+
 
 
 

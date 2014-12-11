@@ -1,17 +1,13 @@
 angular.module('omnigrahm', ['ngAutocomplete'])
-  .controller('AppController', function ($scope) {
-    console.log('AppController!');
-
+  .controller('AppController', function ($scope, $timeout) {
     $scope.activeClasss = 'not-active';
-    angular.element(document).ready(function () {
-      $scope.activeClasss = 'active';
-      console.log('READY: ', $scope.activeClasss);
-      $scope.hello();
-    }.bind($scope));
-
-    $scope.hello = function () {
-      console.log('$scope.activeClasss');
-      console.log($scope.activeClasss);
+    $scope.init = function () {
+      $timeout(function () {
+        $scope.activeClasss = 'active';
+      }, 500);
+      $timeout(function () {
+        window.addCities(window.data);
+      }, 1000);
     };
   })
   .controller('FormController', function ($scope) {
@@ -23,11 +19,13 @@ angular.module('omnigrahm', ['ngAutocomplete'])
     };
     $scope.submitForm = function () {
       if ($scope.currentCity !== null) {
-        console.log('submitForm');
-        console.log('PId : ', $scope.currentCity.place_id);
-        console.log('Nme : ', $scope.currentCity.formatted_address);
-        console.log('Lat : ', $scope.currentCity.geometry.location.lat());
-        console.log('Lng : ', $scope.currentCity.geometry.location.lng());
+        setTimeout(function () {
+          console.log('Adding ', $scope.currentCity.name);
+          var name = $scope.currentCity.name;
+          var lat = $scope.currentCity.geometry.location.lat();
+          var lon = $scope.currentCity.geometry.location.lng();
+          addSingleCity(name, lat, lon);
+        }, 100);
       }
     };
   });

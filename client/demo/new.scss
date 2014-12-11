@@ -21,16 +21,11 @@ body {
 }
 
 #app {
-  min-height: calc(100% - 10px);
+  min-height: calc(90% - 10px);
   margin: 0 auto;
   width: 1202px;
   border: solid 1px $dark-blue;
-  // opacity: 0.5;
-  // transition: opacity 0.5s ease;
-  // &.active {
-  //   opacity: 1;
-  //   transition: opacity 0.5s ease;
-  // }
+  overflow: hidden;
 }
 
 .header {
@@ -95,14 +90,31 @@ body {
 }
 
 .svg-map {
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  &.active {
+    opacity: 1;
+    transition: opacity 1.5s ease;
+  }
+
   svg {
     background: white;
     rect {
       fill: none;
     }
+    circle.city {
+      &.positive {
+        fill: rgba($gold, 0.9);
+        stroke: rgba($gold, 1);
+      }
+      &.negative {
+        fill: rgba($light-blue, 0.9);
+        stroke: rgba($light-blue, 1);
+      }
+    }
   }
   #states {
-    fill: $light-blue;
+    fill: white;
     stroke:  #001D4A;
     stroke-width: 1px;
     stroke-linejoin: round;

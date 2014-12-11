@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Cities = new Schema({
-	id : String,
+	placeId : String,
 	city : String,
 	latitude : String,
 	longitude : String,

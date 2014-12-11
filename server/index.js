@@ -4,8 +4,7 @@ var config = require('./config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
-//var instagramRouter = require("./api/instagram");
-var sentimentRouter = require("./api/sentiment");
+var instagramRouter = require("./api/instagram");
 var jsonParser = bodyParser.json();
 var crontab = require('node-crontab');
 
@@ -17,8 +16,7 @@ if (config.seedDB){
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in the right place?
-   //.use('/api/instagram', instagramRouter)  
-   .use('/api/sentiment', sentimentRouter)
+   .use('/api/instagram', instagramRouter)  
    .use(express.static(path.resolve(__dirname + '/../client/')))
    .use('*', function (req, res) {
      res.status(404).end();

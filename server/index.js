@@ -4,11 +4,10 @@ var config = require('./config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
-var instagramRouter = require("./api/instagram");
 var jsonParser = bodyParser.json();
 var crontab = require('node-crontab');
-
-mongoose.connect(config.mongo.uri, config.mongo.options);
+var db = require('./db.js')
+var instagramRouter = require("./api/instagram");
 
 if (config.seedDB){
  require('./config/seed'); 

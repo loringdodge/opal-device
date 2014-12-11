@@ -6,11 +6,30 @@ describe('Server Processes', function () {
 
   describe('Instagram', function () {
   	it('should get all instagram Top 30', function (done) {
-
+  		request.get('http://localhost:3000/instagram/',
+  			function(err, res, body){
+  				var json = JSON.parse(body);
+          expect(response.statusCode).to.equal(200);
+          expect(json).to.be.a.Array;
+          expect(json).to.have.length(20);
+  			}
+  		);
     });
 
     it('should get data for a specific city', function (done) {
+    	var data = {
+	        "lon": -94.591584099999977,
+	        "name": "Devers,TX,USA",
+	        "lat": 30.0274371,
+	        "id": "ChIJf3IkFlwyP4YREwKBdv391Bs"
+	    }
+    	request.get('http://localhost:3000/instagram/' + data.id,
+  			function(err, res, body){
+  				var json = JSON.parse(body);
+          expect(response.statusCode).to.equal(200);
 
+  			}
+  		);
     });
   });
 

@@ -6,7 +6,7 @@ angular.module('omnigrahm', ['ngAutocomplete'])
         $scope.activeClasss = 'active';
       }, 500);
       $timeout(function () {
-        window.addCities(window.data);
+        window.render(window.data);
       }, 1000);
     };
   })

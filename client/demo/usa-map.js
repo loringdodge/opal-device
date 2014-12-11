@@ -38,41 +38,38 @@ d3.json("/demo/us.json", function (error, us) {
     .attr("id", "state-borders")
     .attr("d", path);
 
-  d3.csv("/demo/cities.csv", function (error, data) {
+  d3.json("/demo/cities.csv", function (error, data) {
     data = data.map(function (d) {
       d.happines = Math.random() * 100;
       return d;
-    })
-    window.addSingleCity = function (lat, lon) {
+    });
+    window.addSingleCity = function (name, lat, lon) {
       data.push({
-        lat: lat,
-        lon: lon,
+        name: name,
+        lat: '' + lat,
+        lon: '' + lon,
         happines: Math.random() * 100
       });
-      console.log(lat, lon);
-      console.log(data);
-      addCities(data, 0);
+      render(data, 0);
     };
     window.data = data;
   });
 });
 
-window.addCities = function (data, timeDelay) {
+window.render = function (data, timeDelay) {
 
-  console.log('Add City');
-
-  var enter = g.selectAll("circle")
+  var total_radius = 30;
+  var cityCircle = g.selectAll("g.city")
     .data(data)
     .enter()
+    .append("g")
+    .attr('class', function (d) {
+      return 'city ' + d.name;
+    });
 
-  var circle1 = enter
-    .append("circle");
-
-  var circle2 = enter
-    .append("circle");
-  var total_radius = 30;
-
-  circle1
+  // Append First Circle
+  cityCircle
+    .append("circle")
     .attr("cx", function (d) {
       return projection([d.lon, d.lat])[0] - 10;
     })
@@ -80,7 +77,9 @@ window.addCities = function (data, timeDelay) {
       return projection([d.lon, d.lat])[1];
     })
     .attr("r", 0)
-    .attr('class', 'city positive')
+    .attr('class', function (d) {
+      return 'city positive ' + d.name;
+    })
     .transition()
     .delay(function (d, i) {
       if (timeDelay !== undefined) return timeDelay;
@@ -91,7 +90,9 @@ window.addCities = function (data, timeDelay) {
       return total_radius * (d.happines * 0.01);
     });
 
-  circle2
+  // Append Second Circle
+  cityCircle
+    .append("circle")
     .attr("cx", function (d) {
       return projection([d.lon, d.lat])[0] + 10;
     })
@@ -99,7 +100,9 @@ window.addCities = function (data, timeDelay) {
       return projection([d.lon, d.lat])[1];
     })
     .attr("r", 0)
-    .attr('class', 'city negative')
+    .attr('class', function (d) {
+      return 'city negative ' + d.name;
+    })
     .transition()
     .delay(function (d, i) {
       if (timeDelay !== undefined) return timeDelay;
@@ -110,7 +113,6 @@ window.addCities = function (data, timeDelay) {
       return total_radius - (total_radius * (d.happines * 0.01));
     });
 };
-
 
 var clicked = function (d) {
   console.log('Clicked');

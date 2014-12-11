@@ -1,12 +1,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var db = require('./db.js')
 var config = require('./config/environment/production');
 var path = require('path');
 var bodyParser = require('body-parser'); 
 var Q = require('q'); 
 var jsonParser = bodyParser.json();
 var crontab = require('node-crontab');
-var db = require('./db.js')
 var instagramRouter = require("./api/instagram");
 
 if (config.seedDB){

@@ -65,6 +65,7 @@ InstagramRouter.post('/:id', function(req, res){
   request(apiUrl)
     .then(function (res, body) {
       if(res.statusCode == 400) throw new Error('400 error on request');
+      console.log(res[0].body);
       var messages = JSON.parse(res[0].body).data;
       
       var parsedMessages = messages.map(function(message){
@@ -89,6 +90,7 @@ InstagramRouter.post('/:id', function(req, res){
         photo_urls : []
       }
 
+      console.log(cityRecord);
       //iterate through messages to further populate city record
       parsedMessages.forEach(function(message){
         sentiment = message.sentiment;
@@ -101,13 +103,20 @@ InstagramRouter.post('/:id', function(req, res){
       console.log(cityRecord);
 
       //add city record to DB.
-      //var cityForDb = new Cities({});
-      //console.log(cityForDb);
+      var cityDB = new Cities(cityRecord);
+      cityDB.save(function(error, data){
+        if(error){
+            console.log('Error: ' + err);
+        }
+        else{
+            res.json('Success: Got it');
+        }
+      });
 
     })
     .catch(function (err) {
       console.log("Error: " + err);
-       return utils.send404(res);
+       // return utils.send404(res);
     });
 });
 

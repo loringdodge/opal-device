@@ -38,7 +38,7 @@ d3.json("/demo/us.json", function (error, us) {
     .attr("id", "state-borders")
     .attr("d", path);
 
-  d3.csv("/demo/cities.csv", function (error, data) {
+  d3.json("/demo/cities.csv", function (error, data) {
     data = data.map(function (d) {
       d.happines = Math.random() * 100;
       return d;
@@ -59,7 +59,6 @@ d3.json("/demo/us.json", function (error, us) {
 window.render = function (data, timeDelay) {
 
   var total_radius = 30;
-
   var cityCircle = g.selectAll("g.city")
     .data(data)
     .enter()

@@ -3,7 +3,7 @@ var width = 1200,
   centered;
 
 var projection = d3.geo.albersUsa()
-  .scale(1070)
+  .scale(1200)
   .translate([width / 2, height / 2]);
 
 var path = d3.geo.path()
@@ -37,9 +37,82 @@ d3.json("/demo/us.json", function (error, us) {
     }))
     .attr("id", "state-borders")
     .attr("d", path);
+
+  d3.csv("/demo/cities.csv", function (error, data) {
+    data = data.map(function (d) {
+      d.happines = Math.random() * 100;
+      return d;
+    })
+    window.addSingleCity = function (lat, lon) {
+      data.push({
+        lat: lat,
+        lon: lon,
+        happines: Math.random() * 100
+      });
+      console.log(lat, lon);
+      console.log(data);
+      addCities(data, 0);
+    };
+    window.data = data;
+  });
 });
 
-function clicked(d) {
+window.addCities = function (data, timeDelay) {
+
+  console.log('Add City');
+
+  var enter = g.selectAll("circle")
+    .data(data)
+    .enter()
+
+  var circle1 = enter
+    .append("circle");
+
+  var circle2 = enter
+    .append("circle");
+  var total_radius = 30;
+
+  circle1
+    .attr("cx", function (d) {
+      return projection([d.lon, d.lat])[0] - 10;
+    })
+    .attr("cy", function (d) {
+      return projection([d.lon, d.lat])[1];
+    })
+    .attr("r", 0)
+    .attr('class', 'city positive')
+    .transition()
+    .delay(function (d, i) {
+      if (timeDelay !== undefined) return timeDelay;
+      return i * 100;
+    })
+    .duration(1000)
+    .attr("r", function (d) {
+      return total_radius * (d.happines * 0.01);
+    });
+
+  circle2
+    .attr("cx", function (d) {
+      return projection([d.lon, d.lat])[0] + 10;
+    })
+    .attr("cy", function (d) {
+      return projection([d.lon, d.lat])[1];
+    })
+    .attr("r", 0)
+    .attr('class', 'city negative')
+    .transition()
+    .delay(function (d, i) {
+      if (timeDelay !== undefined) return timeDelay;
+      return i * 100;
+    })
+    .duration(1000)
+    .attr("r", function (d) {
+      return total_radius - (total_radius * (d.happines * 0.01));
+    });
+};
+
+
+var clicked = function (d) {
   console.log('Clicked');
   var x, y, k;
 
@@ -65,4 +138,4 @@ function clicked(d) {
     .duration(750)
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
     .style("stroke-width", 1.5 / k + "px");
-}
+};

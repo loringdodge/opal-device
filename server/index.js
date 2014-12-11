@@ -13,6 +13,8 @@ if (config.seedDB){
  require('./config/seed'); 
 }
 
+console.log('ENV: ', process.env.NODE_ENV);
+
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in the right place?
    .use('/api/instagram', instagramRouter)  
@@ -27,8 +29,6 @@ console.log("server listening on port " + config.port);
 var placeholderCronJob = crontab.scheduleJob("0 0 * * *", function(){
    console.log("It's midnight!")
 });
-
-
 
 /**
  * Main application routes - formerly housed somewhere else
@@ -60,7 +60,7 @@ module.exports[404] = function pageNotFound(req, res) {
 
   res.status(result.status);
   res.render(viewFilePath, function (err) {
-    if (err) { return res.json(result, result.status); }
+    if (err) { eturn res.json(result, result.status); }
 
     res.render(viewFilePath);
   });
@@ -70,3 +70,4 @@ module.exports[404] = function pageNotFound(req, res) {
 */
 
 
+module.exports = app;

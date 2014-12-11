@@ -1,141 +1,54 @@
-'use strict'; 
-
 var express = require('express');
-var instagramRouter = express.Router();
+var utils = require('utils');
+var mongoose = require('mongoose');
+var sentiment = require('sentiment');
+var Promise = require('bluebird');
+var request = Promise.promisifyAll(require('request'));
+var Cities = Promise.promisifyAll(mongoose.model("Cities"));
 
-instagramRouter.get('/', function(req,res){
-  //controller.findAll (OLD CODE)
+var InstagramRouter = express.Router();
 
-  // serve up top 30 cities
-} );
-
-
-instagramRouter.get('/:placeId', function(req, res){
-  //get instagrams by a specific placeId
-  
-  // controller.findInstagramByLocation
-}); 
-
-
-
-/* **************** instagramController.JS
-
-
-
-// From instagram/index.js
-'use strict'; 
-
-var express = require('express');
-var controller = require('./instagramController');
-
-var router = express.Router();
-
-router.get('/', controller.findAll);
-//router.post('/', controller.createInstagram);
-router.get('/:latlng', controller.findInstagramByLocation); //concat latlng into "lat&lng"
-
-module.exports = router; 
-
-
-// From instagram/instagramController
-var Instagram = require("./instagramModel");
-
-module.exports = {
-  //Grab single instagram
-  findInstagram: function(req, res) {
-    console.log('in findInstagram');
-    Instagram.findById(req.params.id, function(err, instagram){
-      if (err) return handleError(res, err);
-      if (!instagram) return res.send(404);
-      return res.json(instagram);
+InstagramRouter.get('/', function(req, res){
+  Cities.findAsync({})
+    .then(function (city) {
+      if(!city) throw new Error('City Not Found');
+      return res.json(city);
+    }).catch(function (err) {
+      console.log("Error: " + err);
+      return utils.send404(res);
     });
-  },
-  //Grab all instagrams
-  findAll: function(req, res) {
-    console.log(req.body); 
-    
-    Instagram.find(function(err, instagrams) {
-      console.log('in find alasdfs');
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.status(200).json(instagrams);
-    });
-  },
-  findInstagramByLocation: function(req, res){
-    console.log(req.params.latlng); 
-
-    Instagram.find({location: 
-      { $near: 
-        { $geometry: 
-          {type: "Point", coordinates: [-122.052116389, 37.404273872]}, $minDistance: 0, $maxDistance: 100}
-        }
-      }, function(err, instagrams){
-        if(err){
-          return err
-        }
-        return res.json(200,instagrams); 
-      })
-  }
-}
-
-
-****************** instagramModel
-
-// From instagram/instagramMode.js
-var mongoose = require("mongoose");
-
-var InstagramSchema = new mongoose.Schema({
-         "attribution": String,
-         "tags":{ type : Array , "default" : [] },
-         "type":String,
-         "location":{ 'type': {type: String, enum: "Point", default: "Point"}, coordinates: { type: [Number], default: [0,0]} },
-         "comments":Object,
-         "filter":String,
-         "created_time":String, //unix time stamp. have fun! stack overflow_id: 12612110. 
-         "link":String,
-         "likes":Object,
-         "images":Object,
-         "users_in_photo": { type: Array, "default": []}, 
-         "caption":Object,
-         "user_has_liked":Boolean,
-         "id":String,
-         "user":Object, 
-         "sentiment": Object
-        
 });
 
-InstagramSchema.index({location: '2dsphere'}); 
+InstagramRouter.get('/:id', function(req, res){
+  // parse lat/long
+  var latlng = req.params.id;
+  var coor = latlong.split('&');
+  var lat = coor[0];
+  var lng = coor[1];
 
-module.exports = mongoose.model("Instagram", InstagramSchema);
+  // make a request to instagram api
+  var clientId = '0818d423f4be4da084f5e4b446457044';
+  var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + lat;
+      apiUrl += '&lng=' + lng + '&client_id=' + clientId + '&count=20';
+  requestAsync(apiUrl)
+    .then(function (res, body) {
+      if(res.statusCode == 400) throw new Error('400 error on request');
+      var sentiments = body.map(body, function(photo){
+        var caption = photo.get('caption');
+        return sentiment.score(caption);
+      });
+      return requestAsync('http://google.com');
+    })
+    .then(function () {
+      return requestAsync('http://twitter.com');
+    })
+    .then(function () {
+      
+    })
+    .catch(function (err) {
+      console.log("Error: " + err);
+      return utils.send404(res);
+    });
+});
 
-
-***************************** from server.js
-
-
-app.post('/api/instagram', jsonParser, function (req, res) {
-  if (!req.body) return res.sendStatus(400)
-  // create user in req.body
-    console.log('---------here');
-    console.log("request", req);
-    console.log("res", res);
-
-    var createObj = Q.nbind(Instagram.create, Instagram);
-    var theObj = createObj(req.body);
-    console.log(JSON.stringify(theObj));
-    if (theObj) {
-      console.log('testing');
-          res.json(theObj);
-    }
-    //need to parse the body
-    Instagram.create(res.json(createObj(req.body)), function (err, instagram) {
-      if (err) return handleError(res, err);
-      console.log("SUCCESS");
-      //can't set these headers 
-      // return res.status(201).json(theObj)
-      // return res.json(201, instagram);
-    }); 
-})
-
-*/
-
+module.exports = InstagramRouter;

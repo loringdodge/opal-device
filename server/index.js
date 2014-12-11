@@ -6,8 +6,8 @@ var bodyParser = require('body-parser');
 var Q = require('q'); 
 //var instagramRouter = require("./api/instagram");
 var sentimentRouter = require("./api/sentiment");
-var jsonParser = bodyParser.json()
-
+var jsonParser = bodyParser.json();
+var crontab = require('node-crontab');
 
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
@@ -27,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: false }))    //QUESTION: is this in th
 console.log("server listening on port " + config.port);
 
 
+var placeholderCronJob = crontab.scheduleJob("0 0 * * *", function(){
+   console.log("It's midnight!")
+});
 
 
 

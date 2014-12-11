@@ -8,6 +8,7 @@
     "express": "4.10.4",
     "mongodb": "1.4.22",
     "mongoose": "3.8.20",
+    "node-crontab": "0.0.8",
     "q": "1.1.2",
     "request": "2.49.0",
     "sentiment": "^1.0.2",
@@ -17,7 +18,7 @@
     "mocha": "^2.0.1",
     "gulp": "^3.8.10",
     "gulp-sass": "^1.2.4",
-    "gulp-watch": "^3.0.0",
+    "gulp-watch": "^3.0.0"
   },
   "scripts": {
     "test": "mocha"

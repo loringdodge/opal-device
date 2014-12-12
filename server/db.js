@@ -6,17 +6,17 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 var Schema = mongoose.Schema;
 
 var Cities = new Schema({
-	placeId : String,
-	city : String,
-	latitude : String,
-	longitude : String,
-	total_positives : Number,
+  city : String,
+  lat : String,
+  lng : String,
+  placeId : String,
+  total_positives : Number,
   total_negatives : Number,
-	total_neutrals : Number,
-	total_searched : Number,
-  photo_urls : Array,
-  common_words : Array,
-  timestamp : Date
+  total_neutrals  : Number,
+  total_searched : Number,
+  percent_positive: Number,
+  percent_negative: Number,
+  photo_urls : Array
 });
 
 mongoose.model('Cities', Cities);

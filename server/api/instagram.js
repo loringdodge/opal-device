@@ -1,7 +1,9 @@
 var express = require('express');
 var utils = require('./utils');
 var mongoose = require('mongoose');
+var Promise = require('bluebird');
 
+var Cities = Promise.promisifyAll(mongoose.model("Cities"));
 var InstagramRouter = express.Router();
 
 
@@ -20,6 +22,13 @@ InstagramRouter.get('/', function (req, res) {
   //     console.log("Error: " + err);
   //     return utils.send404(res);
   //   });
+  Cities.findAsync({})
+    .then(function (cities) {
+      if(!cities) throw new Error('City Not Found');
+      return res.json(cities);
+    }).catch(function (err) {
+      console.log("Error: " + err);
+    });
 });
 
 

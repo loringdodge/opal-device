@@ -122,11 +122,21 @@ every day, at midnight:
 
 DAY 3 to-do:
 
-make sure database CRUD commands are working
-connect to instagram API
-connect to instagram API without OAuth
-(cron) script to populate DB with top 30 cities
-scipt to send top 30 cities to client (special logic on client side or server side?)
-set up mass instagrams script (to get much larger sets of results)
-fix the 404-sending utility.  it crashes
+[X] GET /api/instagram/:id
+
+[ ] GET /api/instagram/
+  serve up everything in the db
+
+[ ] POST /api/instagram/
+  add this specific city to the db
+
+[ ] CRON
+  every hour on the hour, run top 30,
+  which adds 100 grams for each city to the DB.  update DB entry with more data.
+
+
+
+
+
+
 

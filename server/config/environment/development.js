@@ -5,5 +5,4 @@ module.exports = {
     uri: 'mongodb://localhost/omnitweet'
   },
 
-  seedDB: true
 };

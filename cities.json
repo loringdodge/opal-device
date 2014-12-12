@@ -18,7 +18,7 @@
         "lat": 29.7604267,
         "lng": -95.369802800000002,
         "placeId": "ChIJAYWNSLS4QIYROwVl894CDco",
-    "city": "Houston, TX, USA"
+        "city": "Houston, TX, USA"
     }, {
         "lat": 39.9525839,
         "lng": -75.16522150000003,
@@ -108,7 +108,7 @@
         "lng": -94.591584099999977,
         "city": "Devers,TX,USA",
         "lat": 30.0274371,
-        "placeId": "ChIJf3IkFlwyP4YREwKBdv391Bs"
+    "placeId": "ChIJf3IkFlwyP4YREwKBdv391Bs"
     }, {
         "lng": -77.036870700000009,
         "city": "Washington,DC,USA",

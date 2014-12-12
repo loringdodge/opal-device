@@ -42,7 +42,7 @@ InstagramRouter.get('/:id', function (req, res) {
       return res.json(city);
     }).catch(function (err) {
       console.log("Error: " + err);
-      return utils.send404(res);
+      //return utils.send404(res);
     });
 });
 
@@ -58,13 +58,12 @@ InstagramRouter.post('/:id', function (req, res) {
 
   utils.pullInstagramDataIntoDb(placeId, lng, lat, name);
 
-
-
   // })
   // .catch(function (err) {
   //   console.log("Error: " + err);
   //   // return utils.send404(res);
   // });
+
 });
 
 

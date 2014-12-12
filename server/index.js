@@ -34,7 +34,9 @@ app
 console.log("server listening on port " + config.port);
 
 var placeholderCronJob = crontab.scheduleJob("*/5 * * * *", function () {
-  console.log("It's CRONTIME!!");
+  console.log("************************************************************");
+  console.log("***********************IT'S CRONTIME!!**********************");
+  console.log("************************************************************");
   utils.getTop30();
 });
 

@@ -112,7 +112,6 @@ var utils = {
   },
 
   getInstagrams: function (city, number, originalRes) {
-    console.log("getting mass instagrams");
     var storage = [];
     var clientId = '0818d423f4be4da084f5e4b446457044';
     var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + city.lat;

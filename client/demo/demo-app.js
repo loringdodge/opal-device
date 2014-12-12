@@ -9,7 +9,7 @@ angular.module('omnigrahm', ['ngAutocomplete'])
         .then(function (res) {
           $timeout(function () {
             window.setHappiness(res.data.cities);
-          }, 100);
+          }, 200);
         });
     };
   })

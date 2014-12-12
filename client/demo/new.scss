@@ -98,6 +98,10 @@ body {
     transition: opacity 1.5s ease;
   }
 
+  #states {
+    z-index: -100;
+  }
+
   svg {
     background: white;
     rect {
@@ -111,24 +115,41 @@ body {
           transition: opacity 0.5s ease;
         }
       }
+
     }
 
     g.city {
       transition: opacity 1s ease;
+      &.transition-done {
+        .text {
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+      }
       &.centered {
         z-index: 999;
         opacity: 1 !important;
         transition: opacity 0.5s ease;
+        .text.city-name {
+          opacity: 1;
+          transition: opacity 1s ease;
+        }
       }
       .text {
         font-size: 6px;
         text-anchor: middle;
         dominant-baseline: central;
+        opacity: 0;
+        transition: opacity 0.5s ease;
         &.positive {
           fill: darken($blue_1, 10%);
         }
         &.negative {
           fill: darken($red, 30%);
+        }
+        &.city-name {
+          opacity: 0.1;
+          transition: opacity 1s ease;
         }
       }
     }

@@ -101,7 +101,7 @@ window.render = function (data, timeDelay) {
   var getNegativeRadius = getRadius('negative');
   var getDelay = function (d, i) {
     if (timeDelay !== undefined) return timeDelay;
-    return i * 100;
+    return i * 40;
   };
   var getY = function (d) {
     return projection([d.lon, d.lat])[1];
@@ -113,6 +113,12 @@ window.render = function (data, timeDelay) {
     return function (d) {
       return Math.floor(d[type]) + '%';
     };
+  };
+  var getCityName = function (d) {
+    return d.name;
+  };
+  var getCityNameY = function (d) {
+    return getY(d) - total_radius - 10;
   };
   var getPositiveData = getData('positive');
   var getNegativeData = getData('negative');
@@ -128,6 +134,21 @@ window.render = function (data, timeDelay) {
       return 'city ' + d.id + ' ' + d.name + ' ' + centered;
     })
     .on("click", nodeClicked.bind(null, 'hello'));
+
+  // Add class after 1 second
+  setTimeout(function () {
+    cityCircle.classed('transition-done', true);
+  }, 1000);
+
+  // Append City Name
+  cityCircle
+    .append("text")
+    .text(getCityName)
+    .attr("dx", function (d) {
+      return (projection([d.lon, d.lat])[0]);
+    })
+    .attr("dy", getCityNameY)
+    .attr('class', 'text city-name');
 
   // Append Neutral
   cityCircle

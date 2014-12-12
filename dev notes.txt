@@ -127,6 +127,6 @@ connect to instagram API
 connect to instagram API without OAuth
 (cron) script to populate DB with top 30 cities
 scipt to send top 30 cities to client (special logic on client side or server side?)
-set up pagination script (to get much larger sets of results)
+set up mass instagrams script (to get much larger sets of results)
 fix the 404-sending utility.  it crashes
 

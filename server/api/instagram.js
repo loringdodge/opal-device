@@ -6,6 +6,24 @@ var Promise = require('bluebird');
 var Cities = Promise.promisifyAll(mongoose.model("Cities"));
 var InstagramRouter = express.Router();
 
+//caution: this line clears out the entire DB!
+//Cities.remove({},function(){});
+
+
+//print out size and city list for current DB
+Cities.count({}).exec()
+  .then(function(count){
+    console.log( "Entries in DB: ", count );
+  })
+
+Cities.find({}).exec()
+  .then(function(cities){
+    cities.forEach(function(city){
+      console.log(city.city, ": ", city.photo_urls.length);
+    })
+  })
+
+
 
 //this route is for returning the top 30 cities
 //TODO: refactor so it returns top 30, not just ALL cities in db.
@@ -28,6 +46,7 @@ InstagramRouter.get('/', function (req, res) {
       return res.json(cities);
     }).catch(function (err) {
       console.log("Error: " + err);
+      //return a simple 404 - TODO
     });
 });
 
@@ -47,11 +66,14 @@ InstagramRouter.get('/:id', function (req, res) {
       placeId: req.params.id
     })
     .then(function (city) {
-      if (!city) throw new Error('City Not Found');
+      if(!city || (Array.isArray(city) && city.length===0)) {
+        throw new Error('City Not Found');
+      }
       return res.json(city);
-    }).catch(function (err) {
+    })
+    .catch(function (err) {
       console.log("Error: " + err);
-      //return utils.send404(res);
+      res.status(404).end();
     });
 });
 
@@ -60,12 +82,16 @@ InstagramRouter.get('/:id', function (req, res) {
 InstagramRouter.post('/:id', function (req, res) {
   console.log("post request received at api/instagram/:id");
 
-  var placeId = req.body.placeId;
-  var lng = req.body.lng;
-  var lat = req.body.lat;
-  var name = req.body.name;
+  var city = {
+    placeId: req.body.placeId || req.param('placeId'),
+    lng: req.body.lng,
+    lat: req.body.lat,
+    city: req.body.city
+  }
 
-  utils.pullInstagramDataIntoDb(placeId, lng, lat, name);
+  utils.getInstagrams(city,100);
+
+});
 
   // })
   // .catch(function (err) {

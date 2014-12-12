@@ -2,164 +2,159 @@ var cities = require('../../cities.json');
 var instagram = require('./instagram');
 var sentiment = require('./sentiment');
 var Promise = require('bluebird');
-var mongoose = require('mongoose');
+var mongoose = Promise.promisifyAll(require('mongoose'));
 var request = Promise.promisify(require('request'));
-var Cities = Promise.promisifyAll(mongoose.model("Cities"));
+var Cities = (mongoose.model("Cities"));
+var _ = require('lodash');
 
 var utils = {
 
-	sendResponse: function (response, obj, status) {
-		status = status || 200;
-		response.writeHead(status, headers);
-		response.end(obj);
-	},
+  sendResponse : function(response, obj, status){
+    status = status || 200;
+    response.writeHead(status, headers);
+    response.end(obj);
+  },
 
-	collectData: function (request, callback) {
-		var data = "";
-		request.on("data", function (chunk) {
-			data += chunk;
-		});
-		request.on("end", function () {
-			callback(data);
-		});
-	},
+  collectData : function(request, callback){
+    var data = "";
+    request.on("data", function(chunk){
+      data += chunk;
+    });
+    request.on("end", function(){
+      callback(data);
+    });
+  },
 
-	send404: function (response) {
-		utils.sendResponse(response, '404: Page not found', 404);
-	},
+  send404 : function(response){
+    utils.sendResponse(response, '404: Page not found', 404);
+  },
 
-	sendRedirect: function (response, location, status) {
-		status = status || 302;
-		response.writeHead(status, {
-			Location: location
-		});
-		response.end();
-	},
+  sendRedirect : function(response, location, status){
+    status = status || 302;
+    response.writeHead(status, {Location: location});
+    response.end();
+  },
 
-	getTop30: function () {
-		console.log("getting top 30!")
-		var i = 0;
+  getTop30 : function(){
+    console.log("getting top 30!")
+    var i = 0;
 
-		var getNextCity = function () {
-			var city = cities.cities[i++];
-			console.log("sending req for " + city.city);
-			utils.pullInstagramDataIntoDb(
-				city.placeId,
-				city.lng,
-				city.lat,
-				city.city);
-			if (i < cities.cities.length) {
-				setTimeout(getNextCity, 250)
-			}
-		}
+    var getNextCity = function(){
+      var city = cities.cities[i++];
+      console.log("sending req for " + city.city);
+        utils.getInstagrams(city,100);
+      if(i<cities.cities.length){
+       setTimeout(getNextCity,1000);
+      }
+    }
 
-		getNextCity();
+    getNextCity();
 
-	},
+  },
 
-	pullInstagramDataIntoDb: function (placeId, lng, lat, name) {
-		var clientId = '0818d423f4be4da084f5e4b446457044';
-		var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + lat;
-		apiUrl += '&lng=' + lng + '&client_id=' + clientId + '&count=20';
-		console.log(apiUrl);
-		request(apiUrl)
-			.then(function (res, body) {
-				console.log("response recieved for " + name);
-				if (res.statusCode == 400) throw new Error('400 error on request');
-				var messages = JSON.parse(res[0].body).data;
+  addInstagramDataToDb: function(city, messages){   
+    var query  = Cities.where({ placeId: city.placeId });
+    
+    query.findOneAsync()
+      .then(function (cityRecord) {
+        if (cityRecord) {
+          console.log("city exists in DB");
+        } else {
+          console.log("city doesn't yet exist in DB... creating new record now.")
+          console.log(city);
+          cityRecord = new Cities({
+            city: city.name,
+            lat: city.lat,
+            lng: city.lng,
+            placeId: city.placeId,
+            total_positives : 0,
+            total_negatives : 0,
+            total_neutrals  : 0,
+            percent_positive: 0,
+            percent_negative: 0,
+            total_searched : 0,
+            photo_urls : []
+          });
+      }
+      return cityRecord;
+    })
+    .then(function (cityRecord) {
+      //iterate through messages to further populate city record
+      console.log("iterating through messages in addInstagramDataToDb");
+      _.each(messages,function(message,key){
+        if(key !== "size"){
+          cityRecord.photo_urls.push(message.url);
+          cityRecord.total_searched++;
+          if(message.sentiment>0) cityRecord.total_positives ++;
+          else if(message.sentiment<0) cityRecord.total_negatives ++;
+          else cityRecord.total_neutrals ++;
+        }
+      })
+      cityRecord.percent_positive = cityRecord.total_positives / cityRecord.total_searched;
+      cityRecord.percent_negative = cityRecord.total_negatives / cityRecord.total_searched;
 
-				var parsedMessages = messages.map(function (message) {
-					var text = message.caption ? message.caption.text : "";
-					return {
-						text: text,
-						url: message.link,
-						sentiment: sentiment(text)
-					}
-				})
+      var cityDB = new Cities(cityRecord);
+      
+      // this might not work
+      console.log("saving record to DB")
+      return cityDB.saveAsync()
+    })
+    .then(function(thing){
+      console.log("written to DB!")
+    })
+    .catch(function (err) {
+      console.log('ERROR: ');
+      console.log(err);
+    });
+  },
 
-				//create new city record
-				var cityRecord = {
-					city: name,
-					lat: lat,
-					lng: lng,
-					placeId: placeId,
-					total_positives: 0,
-					total_negatives: 0,
-					total_neutrals: 0,
-					total_searched: parsedMessages.length,
-					photo_urls: []
-				}
+  getInstagrams: function(city,number){
+    console.log("getting mass instagrams");
+    var storage = {};
+    storage.size = 0;
 
-				//iterate through messages to further populate city record
-				parsedMessages.forEach(function (message) {
-					sentiment = message.sentiment;
-					cityRecord.photo_urls.push(message.url);
-					if (sentiment > 0) cityRecord.total_positives++;
-					else if (sentiment < 0) cityRecord.total_negatives++;
-					else cityRecord.total_neutrals++;
-				})
+    var recursiveFetch = function(){
+      var clientId = '0818d423f4be4da084f5e4b446457044';
+      var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + city.lat;
+          apiUrl += '&lng=' + city.lng + '&client_id=' + clientId + '&count=300';
 
-				console.log(cityRecord);
-				console.log('***********************************')
+      request(apiUrl)
+        .then(function (res, body) {
+          if(res.statusCode == 400) {
+            throw new Error('400 error on request');
+          }
+          var json = JSON.parse(res[0].body)
+          if(json.data === undefined ) throw new Error ('error with API call');
+          var messages = json.data;
+          console.log("message count: ", messages.length)
+          var parsedMessages = messages.forEach(function(message){
+            if(storage[message.id] === undefined) {
+              var text = message.caption ? message.caption.text : "";
+              var newMessage = {
+                text: text,
+                url: message.link,
+                sentiment: sentiment(text)
+              }
+              storage[message.id] = newMessage;
+              storage.size++;
+            }
+          })
+        if(storage.size<number){
+          setTimeout(utils.getInstagrams.bind(this,city,number),250);
+        }  else {
+          utils.addInstagramDataToDb(city,storage);
 
-				//add city record to DB.
-				var cityDB = new Cities(cityRecord);
-				cityDB.save(function (error, data) {
-					if (error) {
-						console.log('Error: ' + err);
-					} else {
-						res.json('Success: Got it');
-					}
-				});
+        }
 
-			})
-			.catch(function (err) {
+      })
+      .catch(function (err) {
+        console.log("Error: " + err);
 
-				console.log("Error on: " + err);
-				//return utils.send404(res);
-			});
-	},
+      });
 
-	getMassInstagrams: function (city, storage) {
-		var storage = storage || {};
-
-		if (storage.length > 5000) {
-			return storage;
-		}
-
-		var clientId = '0818d423f4be4da084f5e4b446457044';
-		var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + city.lat;
-		apiUrl += '&lng=' + city.lng + '&client_id=' + clientId + '&count=300';
-
-		request(apiUrl)
-			.then(function (res, body) {
-				if (res.statusCode == 400) {
-					throw new Error('400 error on request');
-				}
-
-				var messages = JSON.parse(res[0].body).data;
-
-				var parsedMessages = messages.forEach(function (message) {
-					if (storage[message.id] === undefined) {
-						var text = message.caption ? message.caption.text : "";
-						var newMessage = {
-							text: text,
-							url: message.link,
-							sentiment: sentiment(text)
-						}
-						storage[message.id] = newMessage;
-					}
-				})
-
-			})
-			.catch(function (err) {
-				console.log("Error: " + err);
-				// return utils.send404(res);
-			});
-
-		getMassInstagrams(city, storage);
-
-	}
+    }
+    recursiveFetch();
+  }
 
 };
 

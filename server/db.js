@@ -6,7 +6,7 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 var Schema = mongoose.Schema;
 
 var Cities = new Schema({
-  city : String,
+  name : String,
   lat : String,
   lng : String,
   placeId : String,

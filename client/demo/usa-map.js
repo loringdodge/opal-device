@@ -37,26 +37,32 @@ d3.json("/demo/us.json", function (error, us) {
     }))
     .attr("id", "state-borders")
     .attr("d", path);
-
-  d3.json("/demo/cities.csv", function (error, data) {
-    data = data.map(function (d) {
-      d.happines = Math.random() * 100;
-      return d;
-    });
-    window.addSingleCity = function (name, lat, lon) {
-      data.push({
-        name: name,
-        lat: '' + lat,
-        lon: '' + lon,
-        happines: Math.random() * 100
-      });
-      render(data, 0);
-    };
-    window.data = data;
-  });
 });
 
+window.setHappiness = function (data) {
+  console.log(data);
+  data = data.map(function (d) {
+    d.positive = Math.random() * 50;
+    d.negative = Math.random() * 50;
+    return d;
+  });
+  window.data = data;
+  window.render(window.data);
+};
+
+window.addSingleCity = function (name, lat, lon, positive, negative) {
+  data.push({
+    name: name,
+    lat: '' + lat,
+    lon: '' + lon,
+    positive: positive,
+    negative: negative
+  });
+  render(data, 0);
+};
+
 window.render = function (data, timeDelay) {
+
 
   var total_radius = 30;
   var cityCircle = g.selectAll("g.city")
@@ -87,7 +93,7 @@ window.render = function (data, timeDelay) {
     })
     .duration(1000)
     .attr("r", function (d) {
-      return total_radius * (d.happines * 0.01);
+      return total_radius * (d.positive * 0.01);
     });
 
   // Append Second Circle
@@ -110,7 +116,7 @@ window.render = function (data, timeDelay) {
     })
     .duration(1000)
     .attr("r", function (d) {
-      return total_radius - (total_radius * (d.happines * 0.01));
+      return total_radius * (d.negative * 0.01);
     });
 };
 

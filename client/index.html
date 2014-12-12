@@ -1,56 +1,32 @@
 <!doctype html>
 <html lang="en" ng-app='omnigrahm'>
 <head>
-  <title>omnigrahm</title>
-
+  <title>Omnigrahm</title>
   <meta charset="UTF-8">
-  <link href="../bower_components/c3/c3.css" rel="stylesheet" type="text/css">
-  <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
-
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
-
-<body ng-controller="PanelController as panel">
-  <button ng-click="panel.selectTab(2)">LOCATION</button>  
-
-  <div ng-show="panel.isSelected(2)" ng-controller='locationController' ng-init="getLocFeed()">
-      <form name="inputLocation" ng-submit="getLocFeed(loc)">
-          <input ng-model="loc" placeholder="Enter location">
-          <button>get location stuff</button>
-      </form>
-   
-    <div id="locationChart"></div>
-    <div class="imageScroll">
-      <table>
-        <th>Happy</th>
-        <tr>
-          <td ng-repeat="picture in images.positive track by $index" ng-click="redirect(picture[1])">
-            <img ng-src="{{picture[0]}}"></img>
-          </td>
-        </tr>
-      </table>
+<body ng-controller='AppController' data-ng-init="init()">
+  <div id='app'>
+    <div class='header'>
+    <h1>Omnigrahm</h1>
+    <form id='main-form' ng-controller='FormController as form'>
+      <input
+        class='input city-name' type='text'
+        ng-autocomplete ng-model='fieldText' ng-change='triggerChange()' placeholder='San Francisco'
+        details='currentCity' options='cities'
+        />
+      <input class='input submit' type='submit' value='Search' ng-click='submitForm()'/>
+    </form>
     </div>
-    <div class="imageScroll">
-      <table>
-        <th>Sad</th>
-        <tr>
-          <td ng-repeat="picture in images.negative track by $index" ng-click="redirect(picture[1])">
-            <img ng-src="{{picture[0]}}"></img>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <div class='svg-map' ng-class='activeClasss'></div>
   </div>
-
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-  <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="../bower_components/oauth-js/dist/oauth.min.js"></script>
-  <script src="../bower_components/d3/d3.min.js"></script>
-  <script src="../bower_components/c3/c3.min.js"></script>
-  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-
-  <script src="./location/location.js"></script>
-
-  <script src="./app.js"></script>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/d3/d3.min.js"></script>
+  <script src="bower_components/topojson/topojson.js"></script>
+  <script src="bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
+  <script src="js/graph.js"></script>
+  <script src='js/main.js'></script>
 </body>
 </html>

@@ -19,29 +19,15 @@ gulp.runSync = function (tasks, cb) {
   return gulp;
 };
 
-gulp.task('sass-demo', function () {
-  return gulp.src('./client/demo/*.scss')
+gulp.task('sass', function () {
+  return gulp.src('./client/css/*.scss')
     .pipe(sass({
       errLogToConsole: true,
       outputStyle: 'compressed'
     }))
-    .pipe(gulp.dest('./client/demo/'));
+    .pipe(gulp.dest('./client/css/'));
 });
 
-// gulp.task('js', function () {
-//   gulp.src([
-//       // Files
-//     ])
-//     .pipe(gulpConcat('main.js'))
-//     // .pipe(uglify()) // Takes a long time
-//     .pipe(gulp.dest('./client/dist/'));
-// });
-
-gulp.task('watch-demo', ['sass-demo'], function () {
-  gulp.watch('./client/demo/**/*.scss', ['sass-demo']);
+gulp.task('watch', ['sass'], function () {
+  gulp.watch('./client/**/*.scss', ['sass']);
 });
-
-// gulp.task('watch', ['js', 'sass'], function () {
-//   gulp.watch('./client/scss/**/*.scss', ['sass']);
-//   gulp.watch('./client/**/*.js', ['js']);
-// });

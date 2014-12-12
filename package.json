@@ -21,7 +21,8 @@
     "gulp-sass": "^1.2.4",
     "gulp-watch": "^3.0.0",
     "mocha": "^2.0.1",
-    "super-request": "0.0.8"
+    "super-request": "0.0.8",
+    "topojson": "^1.6.18"
   },
   "scripts": {
     "test": "mocha"

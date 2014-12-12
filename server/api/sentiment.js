@@ -1,5 +1,6 @@
+/*jshint node:true */
 var analyzeSentiment = require('sentiment');
 
-module.exports = function(message){
+module.exports = function (message) {
   return analyzeSentiment(message).score;
-}
+};

@@ -42,7 +42,6 @@ var utils = {
 
     var getNextCity = function () {
       var city = cities.cities[i++];
-      console.log("sending req for " + city.name);
       utils.getInstagrams(city, 100);
       if (i < cities.cities.length) {
         setTimeout(getNextCity, 200);
@@ -61,10 +60,8 @@ var utils = {
     query.findOneAsync()
       .then(function (cityRecord) {
         if (cityRecord) {
-          console.log("city exists in DB");
           updating = true;
         } else {
-          console.log("city doesn't yet exist in DB... creating new record now.");
           cityRecord = new Cities({
             name: city.name,
             lat: city.lat,

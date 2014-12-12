@@ -1,0 +1,142 @@
+DEV NOTES
+
+
+location-based search (on-demand; fast performance is critical):
+
+CURRENT:
+search for any placename.
+displays ~20 photos, sorted into "happy" and "sad"
+displays a single data point on the graph (% of posts that are happy)
+
+sometimes there are errors during search and the view doesnt change
+console error for invalid placename "cannot read property geometry of undefined"
+sad photos take way longer to load
+
+
+DESIRED:
+
+search for any placename
+  ...large dataset is retrieved
+  happiness % is rendered on correct spot on the big map
+representative photos are displayed somehow (and sorted into happy / sad)
+improve runtime
+
+
+top cities search (expensive operation. occasional cron job)
+
+CURRENT:
+
+ - not implemented - 
+
+
+DESIRED:
+
+batch search for set of 30 - 50 cities. for each city, conduct search described above.
+cache all data to Mongo DB.
+populate map view with all the data.
+
+
+
+
+
+
+
+
+QUESTIONS:
+
+how is location field parsed? what are valid and invalid inputs?
+ - currently it's cityname. spaces are escaped (with '%20' characters)
+
+
+
+
+ BUGFIXES:
+sometimes there are errors during search and the view doesnt change
+console error for invalid placename "cannot read property geometry of undefined"
+runs a search immediately upon visiting locationView (redoes old search, or default search? unclear)
+
+
+REFACTOR:
+
+user.js and location.js controllers share a lot of duplicate logic.
+replace twinword api with open-source sentiment repo.
+
+
+
+MISC NOTES:
+
+
+$scope on LOCATION view has these main properties:
+
+.images: object containing 2 arrays, "positive" and "negative", each of which contain little tuples representing unique photos.
+  { "negative": [ [image url, instagram href], [image url, instagram href]]
+    "positive": [ [image url, instagram href], [image url, instagram href]]
+  }
+.data: object containing an array of photo objects for every placename you've queried in this session.
+  {"san francisco": [ object, object, object, object ],
+   "seattle": [ object, object, object, object ],
+   "boston": [ object, object, object, object ],
+  }
+.chartdata:
+ a little object with two properties.  used for rendering chart.
+ {"positive": ["positive",0.6111]
+  "x": ["x","2014-12-9"]}
+
+
+$scope on USER view has these main properties: 
+
+.instaImages: array of tuples.  each tuple contains two copies (?) of instagram href for a specific post.
+
+.chartData contains info for rendering the chart:
+  { "negative": ["negative", -1, 0, 0]
+    "positive": ["positive", 1, 1, 0]
+    "x": ["x","2014-11-1,2014-10-1,2014-9-1"]
+  }
+
+.chart - appears to be a d3 or c3 node
+
+
+ROUTING:
+
+
+- '/' - serve static assets like index.html
+  - this includes serving up our 'top30' 
+- '/instagram' - respond to requests for specific cities
+  - what city is being searched for?
+  - if not memoized - fetch data from Instagram API. memoize it. (can be skipped in version 1.0)
+  - serve memoized files from DB to client (can happen simultaneously with last step)
+
+
+CRON:
+
+every day, at midnight:
+
+- empty out the database
+- run a query for each of the top cities.
+  - get 30 pages of results.
+  - (20 msgs each = 600 points per city)
+  - 600*30 = 18000 msgs total
+  - compress that data and store it in the server
+
+
+
+DAY 3 to-do:
+
+[X] GET /api/instagram/:id
+
+[ ] GET /api/instagram/
+  serve up everything in the db
+
+[ ] POST /api/instagram/
+  add this specific city to the db
+
+[ ] CRON
+  every hour on the hour, run top 30,
+  which adds 100 grams for each city to the DB.  update DB entry with more data.
+
+
+
+
+
+
+

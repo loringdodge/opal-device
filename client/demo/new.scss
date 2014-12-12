@@ -1,8 +1,9 @@
 // http://coolors.co/eca400-87bcde-006992-27476e-001d4a
 $gold: #ECA400;
-$light-blue: #006992;
+$light-blue: #87BCDE;
 $blue_1: #006992;
 $blue_2: #27476E;
+$red: #FF3E41;
 $dark-blue: #001D4A;
 
 * {
@@ -102,19 +103,54 @@ body {
     rect {
       fill: none;
     }
+
+    .city-container {
+      &.centered {
+        g.city {
+          opacity: 0.1;
+          transition: opacity 0.5s ease;
+        }
+      }
+    }
+
+    g.city {
+      transition: opacity 1s ease;
+      &.centered {
+        z-index: 999;
+        opacity: 1 !important;
+        transition: opacity 0.5s ease;
+      }
+      .text {
+        font-size: 6px;
+        text-anchor: middle;
+        dominant-baseline: central;
+        &.positive {
+          fill: darken($blue_1, 10%);
+        }
+        &.negative {
+          fill: darken($red, 30%);
+        }
+      }
+    }
+
     circle.city {
+      cursor: pointer;
+      &.neutral {
+        fill: rgba(#ccc, 0.5);
+        stroke: rgba(darken(#ccc, 20%), 0.7);
+      }
       &.positive {
-        fill: rgba($gold, 0.9);
-        stroke: rgba($gold, 1);
+        fill: rgba($blue_1, 0.85);
+        stroke: darken($blue_1, 20%);
       }
       &.negative {
-        fill: rgba($light-blue, 0.9);
-        stroke: rgba($light-blue, 1);
+        fill: rgba($red, 0.85);
+        stroke: darken($red, 20%);
       }
     }
   }
   #states {
-    fill: white;
+    fill: #f7f7f7;
     stroke:  #001D4A;
     stroke-width: 1px;
     stroke-linejoin: round;

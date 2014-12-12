@@ -10,7 +10,7 @@ angular.module('omnigrahm', ['ngAutocomplete'])
           $timeout(function () {
             window.setHappiness(res.data.cities);
           }, 100);
-        })
+        });
     };
   })
   .controller('FormController', function ($scope, $http) {
@@ -33,7 +33,7 @@ angular.module('omnigrahm', ['ngAutocomplete'])
               var negative = Math.random() * 50;
               console.log(res);
               addSingleCity(name, lat, lon, positive, negative);
-            })
+            });
         }, 100);
       }
     };

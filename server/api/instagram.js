@@ -30,23 +30,13 @@ Cities.find({}).exec()
 InstagramRouter.get('/', function (req, res) {
   console.log("request received at api/instagram/")
 
-  //HARDCODED to return cities json object for now.
-  return res.json(citiesJSON);
-  // Cities.findAsync({})
-  //   .then(function (cities) {
-  //     if(!cities) throw new Error('City Not Found');
-  //     return res.json(cities);
-  //   }).catch(function (err) {
-  //     console.log("Error: " + err);
-  //     return utils.send404(res);
-  //   });
   Cities.findAsync({})
     .then(function (cities) {
       if(!cities) throw new Error('City Not Found');
       return res.json(cities);
     }).catch(function (err) {
       console.log("Error: " + err);
-      //return a simple 404 - TODO
+      res.status(404).end()
     });
 });
 
@@ -60,8 +50,6 @@ InstagramRouter.get('/', function (req, res) {
 //return db's info about this city
 InstagramRouter.get('/:id', function (req, res) {
   console.log("get request received at api/instagram/:id")
-    // Just for testing
-  res.status(200).end();
   Cities.findAsync({
       placeId: req.params.id
     })
@@ -98,9 +86,6 @@ InstagramRouter.post('/:id', function (req, res) {
   //   console.log("Error: " + err);
   //   // return utils.send404(res);
   // });
-
-});
-
 
 
 // EXAMPLE CODE for pagination / looping requests.

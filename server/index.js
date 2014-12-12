@@ -8,6 +8,7 @@ var Q = require('q');
 var jsonParser = bodyParser.json();
 var crontab = require('node-crontab');
 var instagramRouter = require("./api/instagram");
+var utils = require('./api/utils');
 
 if (config.seedDB){
  require('./config/seed'); 
@@ -29,6 +30,11 @@ console.log("server listening on port " + config.port);
 var placeholderCronJob = crontab.scheduleJob("0 0 * * *", function(){
    console.log("It's midnight!")
 });
+
+//utils.getTop30();
+
+
+
 
 /**
  * Main application routes - formerly housed somewhere else

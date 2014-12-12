@@ -104,10 +104,6 @@ var utils = {
         return cityDB.saveAsync();
       }
     })
-    .then(function(thing){
-      console.log("written to DB!");
-
-    })
     .catch(function (err) {
       console.log('ERROR: ');
       console.log(err);

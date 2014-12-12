@@ -1,9 +1,11 @@
 // http://coolors.co/eca400-87bcde-006992-27476e-001d4a
 $gold: #ECA400;
-$light-blue: #006992;
+$light-blue: #87BCDE;
 $blue_1: #006992;
 $blue_2: #27476E;
+$red: #FF3E41; // #FF3E41, #BA2D0B, #E8AEB7
 $dark-blue: #001D4A;
+$green: #4CB963; // #B9D8C2, #157F1F, #4CB963, #D2F898, #40FD65
 
 * {
   font-family: 'Lato', sans-serif;
@@ -97,24 +99,80 @@ body {
     transition: opacity 1.5s ease;
   }
 
+  #states {
+    z-index: -100;
+  }
+
   svg {
     background: white;
     rect {
       fill: none;
     }
+
+    .city-container {
+      &.centered {
+        g.city {
+          opacity: 0.1;
+          transition: opacity 0.5s ease;
+        }
+      }
+
+    }
+
+    g.city {
+      transition: opacity 1s ease;
+      &.transition-done {
+        .text {
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+      }
+      &.centered {
+        z-index: 999;
+        opacity: 1 !important;
+        transition: opacity 0.5s ease;
+        .text.city-name {
+          opacity: 1;
+          transition: opacity 1s ease;
+        }
+      }
+      .text {
+        font-size: 6px;
+        text-anchor: middle;
+        dominant-baseline: central;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        &.positive {
+          fill: darken($green, 10%);
+        }
+        &.negative {
+          fill: darken($red, 30%);
+        }
+        &.city-name {
+          opacity: 0.1;
+          transition: opacity 1s ease;
+        }
+      }
+    }
+
     circle.city {
+      cursor: pointer;
+      &.neutral {
+        fill: rgba(#ccc, 0.5);
+        stroke: rgba(darken(#ccc, 20%), 0.7);
+      }
       &.positive {
-        fill: rgba($gold, 0.9);
-        stroke: rgba($gold, 1);
+        fill: rgba($green, 0.85);
+        stroke: darken($green, 20%);
       }
       &.negative {
-        fill: rgba($light-blue, 0.9);
-        stroke: rgba($light-blue, 1);
+        fill: rgba($red, 0.85);
+        stroke: darken($red, 20%);
       }
     }
   }
   #states {
-    fill: white;
+    fill: #f7f7f7;
     stroke:  #001D4A;
     stroke-width: 1px;
     stroke-linejoin: round;
@@ -125,6 +183,8 @@ body {
       }
   }
   #state-borders {
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
     fill: none;
     stroke:#001D4A;
     stroke-width: 1px;

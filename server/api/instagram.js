@@ -19,7 +19,7 @@ Cities.count({}).exec()
 Cities.find({}).exec()
   .then(function(cities){
     cities.forEach(function(city){
-      console.log(city.name, ": ", city.photo_urls.length, " messages in db.");
+      console.log(city.name, ": ", city.total_searched, " messages in db.");
     })
   })
 

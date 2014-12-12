@@ -62,7 +62,6 @@ var utils = {
           updating = true;
         } else {
           console.log("city doesn't yet exist in DB... creating new record now.")
-          console.log(city);
           cityRecord = new Cities({
             name: city.name,
             lat: city.lat,
@@ -74,17 +73,17 @@ var utils = {
             percent_positive: 0,
             percent_negative: 0,
             total_searched : 0,
-            photo_urls : []
+            photo_urls : {}
           });
       }
       return cityRecord;
     })
     .then(function (cityRecord) {
       //iterate through messages to further populate city record
-      console.log("iterating through messages in addInstagramDataToDb");
       _.each(messages,function(message,key){
-        if(key !== "size"){
-          cityRecord.photo_urls.push(message.url);
+        var instagramId = message.url.split('/')[4];
+        if(key !== "size" && !cityRecord.photo_urls[instagramId]){
+          cityRecord.photo_urls[instagramId] = true;
           cityRecord.total_searched++;
           if(message.sentiment>0) cityRecord.total_positives ++;
           else if(message.sentiment<0) cityRecord.total_negatives ++;
@@ -95,13 +94,13 @@ var utils = {
       cityRecord.percent_negative = cityRecord.total_negatives / cityRecord.total_searched;
 
       
-      console.log("saving record to DB")
+      console.log("saving record to DB: " + cityRecord.name + " with " + cityRecord.total_searched + " messages.")
       if(updating){
-        originalRes.status(201).json(cityRecord);
+        if(originalRes) originalRes.status(201).json(cityRecord);
         return cityRecord.saveAsync();
       } else {
         var cityDB = new Cities(cityRecord);
-        originalRes.status(201).json(cityDB);
+        if(originalRes) originalRes.status(201).json(cityDB);
         return cityDB.saveAsync();
       }
     })
@@ -131,7 +130,6 @@ var utils = {
         var json = JSON.parse(res[0].body)
         if(json.data === undefined ) throw new Error ('error with API call');
         var messages = json.data;
-        console.log("message count: ", messages.length)
         var parsedMessages = messages.forEach(function(message){
           var text = message.caption ? message.caption.text : "";
           var newMessage = {

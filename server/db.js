@@ -16,7 +16,7 @@ var Cities = new Schema({
   total_searched : Number,
   percent_positive: Number,
   percent_negative: Number,
-  photo_urls : Array
+  photo_urls : Object
 });
 
 mongoose.model('Cities', Cities);

@@ -26,4 +26,48 @@ module.exports = {
 	  response.end();
 	}
 
+	getMassInstagrams : function(city, storage){
+	  var storage = storage || {};
+
+	  if(storage.length > 5000){
+	  	return storage;
+	  }
+
+	  var clientId = '0818d423f4be4da084f5e4b446457044';
+	  var apiUrl = 'https://api.instagram.com/v1/media/search?lat=' + city.lat;
+	      apiUrl += '&lng=' + city.lng + '&client_id=' + clientId + '&count=300';
+
+	  request(apiUrl)
+	    .then(function (res, body) {
+	      if(res.statusCode == 400) {
+	      	throw new Error('400 error on request');
+	      }
+
+	      var messages = JSON.parse(res[0].body).data;
+	      
+	      var parsedMessages = messages.forEach(function(message){
+	      	if(storage[message.id] === undefined) {
+		        var text = message.caption ? message.caption.text : "";
+		        var newMessage = {
+		          text: text,
+		          url: message.link,
+		          sentiment: sentiment(text)
+		        }
+		        storage[message.id] = newMessage;
+		      }
+	      })
+
+    })
+    .catch(function (err) {
+      console.log("Error: " + err);
+       // return utils.send404(res);
+    });
+
+    getMassInstagrams(city, storage);
+
+	}
+
+
+
+
 }

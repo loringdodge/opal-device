@@ -10,7 +10,7 @@ var InstagramRouter = express.Router();
 InstagramRouter.get('/', function (req, res) {
   console.log("request received at api/instagram/")
 
-  //HARDCODED to return cities json object for now. 
+  //HARDCODED to return cities json object for now.
   return res.json(citiesJSON);
   // Cities.findAsync({})
   //   .then(function (cities) {
@@ -93,7 +93,7 @@ var citiesJSON = {
   }, {
     "lat": 34.052234200000001,
     "lon": -118.24368490000001,
-    "id": "ChIJE9on3F3HwoAR9AhGJW_fL - I",
+    "id": "ChIJE9on3F3HwoAR9AhGJW_fL-I",
     "name": "Los Angeles, CA, USA"
   }, {
     "lat": 41.878113599999999,
@@ -108,7 +108,7 @@ var citiesJSON = {
   }, {
     "lat": 39.9525839,
     "lon": -75.16522150000003,
-    "id": "ChIJ60u11Ni3xokRwVg - jNgU9Yk",
+    "id": "ChIJ60u11Ni3xokRwVg-jNgU9Yk",
     "name": "Philadelphia, PA, USA"
   }, {
     "lat": 33.448377100000002,
@@ -164,7 +164,7 @@ var citiesJSON = {
     "lon": -80.843126699999971,
     "name": "Charlotte,NC,USA",
     "lat": 35.227086900000003,
-    "id": "ChIJgRo4_MQfVIgRZNFDv - ZQRog"
+    "id": "ChIJgRo4_MQfVIgRZNFDv-ZQRog"
   }, {
     "lon": -97.330765799999995,
     "name": "Fort Worth,TX,USA",
@@ -179,12 +179,12 @@ var citiesJSON = {
     "lon": -106.44245590000003,
     "name": "El Paso,TX,USA",
     "lat": 31.7775757,
-    "id": "ChIJaTv - xYs_54YRIgKdq - OEkeM"
+    "id": "ChIJaTv-xYs_54YRIgKdq-OEkeM"
   }, {
     "lon": -90.048980099999994,
     "name": "Memphis,TN,USA",
     "lat": 35.149534299999999,
-    "id": "ChIJRZdD6h5 - 1 YcR_rYaYBXzk9E"
+    "id": "ChIJRZdD6h5-1YcR_rYaYBXzk9E"
   }, {
     "lon": -122.3320708,
     "name": "Seattle,WA,USA",
@@ -199,7 +199,7 @@ var citiesJSON = {
     "lon": -77.036870700000009,
     "name": "Washington,DC,USA",
     "lat": 38.907192299999998,
-    "id": "ChIJW - T2Wt7Gt4kRKl2I1CJFUsI"
+    "id": "ChIJW-T2Wt7Gt4kRKl2I1CJFUsI"
   }, {
     "lon": -71.060096999999985,
     "name": "Boston,MA,USA",

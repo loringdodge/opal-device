@@ -221,7 +221,7 @@ var nodeClicked = function (str, d, b, c) {
   var x, y, k;
   x = projection([d.lon, d.lat])[0];
   y = projection([d.lon, d.lat])[1];
-  k = 4;
+  k = 2;
   centered = d;
   centered.centered = true;
 
@@ -238,9 +238,9 @@ var zoomInOut = function (d, x, y, k) {
     .classed("active", centered && function (d) {
       return d === centered;
     });
+  // We use `translate3d` for hardware acceleration
   var transform = "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
   g.transition()
     .duration(800)
-    .attr("transform", transform)
-    .style("stroke-width", 1.5 / k + "px");
+    .attr("transform", transform);
 };

@@ -64,24 +64,16 @@ d3.json("/json/us-simplified.json", function (error, us) {
 });
 
 window.setHappiness = function (data) {
-  data = data.map(function (d) {
-    d.positive = d.percent_positive*100;
-    d.negative = d.percent_negative*100;
-    return d;
-  });
+  console.log(data[0]);
   window.data = data;
   window.render(window.data);
 };
 
 window.addSingleCity = function (city) {
-  data.push({
-    id: city.placeId,
-    name: city.name,
-    lat: '' + city.lat,
-    lng: '' + city.lng,
-    positive: city.percent_positive,
-    negative: city.percent_negative,
-  });
+  console.log('city', city);
+  city.lat = '' + city.lat;
+  city.lng = '' + city.lng;
+  data.push(city);
   render(data, 0);
 };
 
@@ -142,6 +134,9 @@ window.render = function (data, timeDelay) {
     .append("text")
     .text(getCityName)
     .attr("dx", function (d) {
+      if(!d.lng || !d.lat ){
+        console.log(d);
+      }
       return (projection([d.lng, d.lat])[0]);
     })
     .attr("dy", getCityNameY)

@@ -8,7 +8,12 @@ angular.module('omnigrahm', ['ngAutocomplete'])
       return $http.get('/api/instagram')                              // HERE!
         .then(function (res) {
           $timeout(function () {
-            window.setHappiness(res.data);
+            var cities = res.data.map(function (city) {
+              city.positive = city.percent_positive * 100;
+              city.negative = city.percent_negative * 100;
+              return city;
+            });
+            window.setHappiness(cities);
           }, 200);
         });
     };
@@ -29,16 +34,30 @@ angular.module('omnigrahm', ['ngAutocomplete'])
         if (city.place_id === undefined) return false;
         $http.get('/api/instagram/' + city.place_id)                  // AND HERE!
           .then(function (res) {
-            console.log('Res!');
-            var name = res.name;
-            var lat = res.lat;
-            var lon = res.lng;
-            var positive = res.percent_positive;
-            var negative = res.percent_negative;
-            addSingleCity(res);
+            var _city  = {
+              name: city.name, 
+              lat: city.geometry.location.lat(),
+              lng: city.geometry.location.lng(),
+              place_id: city.place_id,
+              positive: res.data[0].percent_positive * 100,
+              negative: res.data[0].percent_negative * 100
+            }
+            addSingleCity(_city);
           })
           .catch(function (err) {
-            console.log('!!!');
+            var _city  = {
+              name: city.name, 
+              lat: city.geometry.location.lat(),
+              lng: city.geometry.location.lng(),
+              place_id: city.place_id,
+            }
+            $http.post('/api/instagram/', _city)                  // AND HERE!
+              .then(function (res) {
+                console.log('POST City Request');
+                _city.positive = res.data[0].percent_positive * 100;
+                _city.positive = res.data[0].percent_negative * 100;
+                addSingleCity(_city);
+              })
           });
       }
     });

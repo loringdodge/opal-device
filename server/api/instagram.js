@@ -42,12 +42,6 @@ InstagramRouter.get('/', function (req, res) {
 
 
 
-//id is a placename
-//look up placename in db
-//if placename not found in DB, return 404 or similiar
-//which will cause client to send a post request with city name, latlong, id, etc.
-//server will then fetch instagram data and store it all in db
-//return db's info about this city
 InstagramRouter.get('/:id', function (req, res) {
   console.log("get request received at api/instagram/:id");
   Cities.findAsync({

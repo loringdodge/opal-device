@@ -31,10 +31,14 @@ app
     res.status(404).end();
   })
   .listen(config.port);
+
 console.log("server listening on port " + config.port);
 
-var placeholderCronJob = crontab.scheduleJob("*/5 * * * *", function () {
-  console.log("It's CRONTIME!!");
+
+var cronJob = crontab.scheduleJob("*/5 * * * *", function () {
+  console.log("************************************************************");
+  console.log("***********************IT'S CRONTIME!!**********************");
+  console.log("************************************************************");
   utils.getTop30();
 });
 

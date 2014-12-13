@@ -65,33 +65,22 @@ d3.json("/json/us-simplified.json", function (error, us) {
 
 window.setHappiness = function (data) {
   data = data.map(function (d) {
-    d.positive = Math.random() * 50;
-    d.negative = Math.random() * 50;
+    d.positive = d.percent_positive*100;
+    d.negative = d.percent_negative*100;
     return d;
   });
   window.data = data;
   window.render(window.data);
 };
 
-window.addSingleCity = function (id, name, lat, lon) {
+window.addSingleCity = function (city) {
   data.push({
-    id: id,
-    name: name,
-    lat: '' + lat,
-    lon: '' + lon,
-    positive: Math.random() * 50,
-    negative: Math.random() * 50,
-  });
-  render(data, 0);
-};
-
-window.addSingleCity = function (name, lat, lon, positive, negative) {
-  data.push({
-    name: name,
-    lat: '' + lat,
-    lon: '' + lon,
-    positive: positive,
-    negative: negative
+    id: city.placeId,
+    name: city.name,
+    lat: '' + city.lat,
+    lng: '' + city.lng,
+    positive: city.percent_positive,
+    negative: city.percent_negative,
   });
   render(data, 0);
 };
@@ -112,7 +101,7 @@ window.render = function (data, timeDelay) {
     return i * 40;
   };
   var getY = function (d) {
-    return projection([d.lon, d.lat])[1];
+    return projection([d.lng, d.lat])[1];
   };
   var getName = function (d) {
     return d.name;
@@ -153,7 +142,7 @@ window.render = function (data, timeDelay) {
     .append("text")
     .text(getCityName)
     .attr("dx", function (d) {
-      return (projection([d.lon, d.lat])[0]);
+      return (projection([d.lng, d.lat])[0]);
     })
     .attr("dy", getCityNameY)
     .attr('class', 'text city-name');
@@ -162,7 +151,7 @@ window.render = function (data, timeDelay) {
   cityCircle
     .append("circle")
     .attr("cx", function (d) {
-      return projection([d.lon, d.lat])[0];
+      return projection([d.lng, d.lat])[0];
     })
     .attr("cy", getY)
     .attr("r", 0)
@@ -176,7 +165,7 @@ window.render = function (data, timeDelay) {
   cityCircle
     .append("circle")
     .attr("cx", function (d) {
-      return (projection([d.lon, d.lat])[0] - (total_radius - getPositiveRadius(d)));
+      return (projection([d.lng, d.lat])[0] - (total_radius - getPositiveRadius(d)));
     })
     .attr("cy", getY)
     .attr("r", 0)
@@ -191,7 +180,7 @@ window.render = function (data, timeDelay) {
     .append("text")
     .text(getPositiveData)
     .attr("dx", function (d) {
-      return (projection([d.lon, d.lat])[0] - (total_radius - getPositiveRadius(d)));
+      return (projection([d.lng, d.lat])[0] - (total_radius - getPositiveRadius(d)));
     })
     .attr("dy", getY)
     .attr('class', 'text positive');
@@ -200,7 +189,7 @@ window.render = function (data, timeDelay) {
   cityCircle
     .append("circle")
     .attr("cx", function (d) {
-      return (projection([d.lon, d.lat])[0] + (total_radius - getNegativeRadius(d)));
+      return (projection([d.lng, d.lat])[0] + (total_radius - getNegativeRadius(d)));
     })
     .attr("cy", getY)
     .attr("r", 0)
@@ -215,7 +204,7 @@ window.render = function (data, timeDelay) {
     .append("text")
     .text(getNegativeData)
     .attr("dx", function (d) {
-      return (projection([d.lon, d.lat])[0] + (total_radius - getNegativeRadius(d)));
+      return (projection([d.lng, d.lat])[0] + (total_radius - getNegativeRadius(d)));
     })
     .attr("dy", getY)
     .attr('class', 'text negative');
@@ -227,8 +216,8 @@ var nodeClicked = function (str, d, b, c) {
   d3.event.preventDefault();
   d3.event.stopPropagation();
   var x, y, k;
-  x = projection([d.lon, d.lat])[0];
-  y = projection([d.lon, d.lat])[1];
+  x = projection([d.lng, d.lat])[0];
+  y = projection([d.lng, d.lat])[1];
   k = 2;
   centered = d;
   centered.centered = true;

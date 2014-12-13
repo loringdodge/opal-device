@@ -5,10 +5,10 @@ angular.module('omnigrahm', ['ngAutocomplete'])
       $timeout(function () {
         $scope.activeClasss = 'active';
       }, 500);
-      return $http.get('/api/instagram')
+      return $http.get('/api/instagram')                              // HERE!
         .then(function (res) {
           $timeout(function () {
-            window.setHappiness(res.data.cities);
+            window.setHappiness(res.data);
           }, 200);
         });
     };
@@ -27,15 +27,15 @@ angular.module('omnigrahm', ['ngAutocomplete'])
       if ($scope.currentCity !== null) {
         var city = $scope.currentCity;
         if (city.place_id === undefined) return false;
-        $http.get('/api/instagram/' + city.place_id)
+        $http.get('/api/instagram/' + city.place_id)                  // AND HERE!
           .then(function (res) {
             console.log('Res!');
-            var name = city.name;
-            var lat = city.geometry.location.lat();
-            var lon = city.geometry.location.lng();
-            var positive = Math.random() * 50;
-            var negative = Math.random() * 50;
-            addSingleCity(name, lat, lon, positive, negative);
+            var name = res.name;
+            var lat = res.lat;
+            var lon = res.lng;
+            var positive = res.percent_positive;
+            var negative = res.percent_negative;
+            addSingleCity(res);
           })
           .catch(function (err) {
             console.log('!!!');
